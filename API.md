@@ -156,7 +156,7 @@
 
 ### 1.4.1. 添加管理员
 
-- POST /xkp/maneger
+- POST /xkp/manager
 - payload :
 
 ```json
@@ -186,7 +186,7 @@
 
 ### 1.4.2. 查询管理员
 
-- GET /xkp/maneger?
+- GET /xkp/manager?
   - academyId : 学院 id (必须)
   - specialtyId : 专业 id
   - classId : 班级 id
@@ -259,7 +259,7 @@
 
 ### 1.4.5. 删除管理员
 
-- DELETE /xkp/maneger/{systemId}
+- DELETE /xkp/manager/{systemId}
 - return :
 
 ```json
@@ -784,7 +784,7 @@
     "marks": [
         {
             "courseId": 1234,
-            "trye": true,
+            "type": true,
             "examination": 70,
             "inspection": null
         }
@@ -818,7 +818,7 @@
         "marks": [
             {
                 "courseId": 1234,
-                "trye": true,
+                "type": true,
                 "examination": 70,
                 "inspection": null
             }
@@ -843,7 +843,7 @@
     "marks": [
         {
             "courseId": 1234,
-            "trye": true,
+            "type": true,
             "examination": 70,
             "inspection": null
         }
