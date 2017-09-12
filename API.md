@@ -165,7 +165,8 @@
     "academyId": 2,
     "specialtyId": 2,
     "classId": 2,
-    "grade": "2015"
+    "grade": "2015",
+    "type": "C"
 }
 ```
 
@@ -810,21 +811,25 @@
 - return :
 
 ```json
-[
-    {
-        "studentId": 231,
-        "studentNumber": "2015111363",
-        "name": "张三",
-        "marks": [
-            {
-                "courseId": 1234,
-                "type": true,
-                "examination": 70,
-                "inspection": null
-            }
-        ]
-    }
-]
+{
+    "code": 0,
+    "message": "",
+    "data": [
+        {
+            "studentId": 231,
+            "studentNumber": "2015111363",
+            "name": "张三",
+            "marks": [
+                {
+                    "courseId": 1234,
+                    "type": true,
+                    "examination": 70,
+                    "inspection": null
+                }
+            ]
+        }
+    ]
+}
 ```
 
 ---
