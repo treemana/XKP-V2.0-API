@@ -890,6 +890,8 @@
   - studentId : 学生 id
   - courseId : 课程 id
   - type : true 考试 | false 考察
+  - examination : 分数 (考试)
+  - inspection  : 优秀 | 良好 | 中等 | 及格 | 不及格 (考察)
 
 ```json
 {
