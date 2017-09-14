@@ -1,5 +1,3 @@
-# k2sigma
-
 ## Get started
 Install dependencies and check to see it works. It is recommended that you use [Yarn](https://yarnpkg.com/) for deterministic installs, but `npm install` will work just as well.
 ```bash
