@@ -1,0 +1,23 @@
+.main {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .main-container {
+    border: 1px dotted #999;
+    padding: 20px;
+    width: 300px;
+    height: 270px;
+  }
+  .title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;;
+  }
+  .login-form {
+    margin-top: 20px;
+  }
+  .login-form-button {
+    width: 100%;
+  }
+}

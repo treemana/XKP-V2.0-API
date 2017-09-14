@@ -1,0 +1,9 @@
+.main {
+  height: 100%;
+
+  :global {
+    .ant-tabs-nav .ant-tabs-tab {
+      margin: 0 5%;
+    }
+  }
+}
