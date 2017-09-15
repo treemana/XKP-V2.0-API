@@ -8,8 +8,8 @@ type Props = {
   data: Object
 }
 type States = {
-  num: String,
-  name: String,
+  num: string,
+  name: string,
   dataSource1: Array<Object>,
   dataSource2: Array<Object>,
   dataSource3: Array<Object>

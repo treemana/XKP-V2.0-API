@@ -5,7 +5,7 @@ import { Table, Icon, Input, Popconfirm } from 'antd'
 import universalFetch, { handleFetchError } from 'utils/fetch'
 
 type States = {
-  name: String,
+  name: string,
   dataSource: Array<Object>
 }
 class AcatemyManage extends React.Component {

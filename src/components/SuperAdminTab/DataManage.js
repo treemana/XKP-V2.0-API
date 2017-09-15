@@ -5,7 +5,7 @@ import { Table, Icon, Input, Button, Spin, message, Popconfirm } from 'antd'
 import universalFetch, { handleFetchError } from 'utils/fetch'
 
 type States = {
-  grade: String,
+  grade: string,
   loading: boolean,
   dataSource: Array<Object>
 }

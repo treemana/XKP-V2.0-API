@@ -6,11 +6,11 @@ import universalFetch, { handleFetchError } from 'utils/fetch'
 const RadioGroup = Radio.Group
 
 type States = {
-  radioValue: String,
+  radioValue: string,
   acatemyList: Array<Object>,
   gradeList: Array<Object>,
   selectAcatemy: Array<Number>,
-  selectGrade: Array<String>
+  selectGrade: Array<string>
 }
 class LoginSetting extends React.Component {
   state: States

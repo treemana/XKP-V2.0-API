@@ -14,7 +14,7 @@ type Props = {
   data: Object
 }
 type States = {
-  active: String
+  active: string
 }
 class AdminTab extends React.Component {
   state: States

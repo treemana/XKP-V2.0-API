@@ -10,14 +10,14 @@ type Props = {
 }
 type States = {
   dataSource: Array<Object>,
-  cxpd: String,
-  dy: String,
-  wt: String,
-  xsky: String,
-  post: String,
-  xskybz: String,
-  postbz: String,
-  visible: booelan,
+  cxpd: string,
+  dy: string,
+  wt: string,
+  xsky: string,
+  post: string,
+  xskybz: string,
+  postbz: string,
+  visible: boolean,
   modalData: Object
 }
 class Basic extends React.Component {
@@ -126,7 +126,7 @@ class Basic extends React.Component {
       [e.target.name]: e.target.value
     })
   }
-  changeCxpd (value: String) {
+  changeCxpd (value: string) {
     this.setState({
       cxpd: value
     })

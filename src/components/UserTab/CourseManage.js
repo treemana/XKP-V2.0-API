@@ -9,10 +9,10 @@ type Props = {
   data: Object
 }
 type States = {
-  name: String,
+  name: string,
   dataSource: Array<Object>,
-  score: String,
-  type: String
+  score: string,
+  type: string
 }
 class CourseManage extends React.Component {
   props: Props
@@ -132,7 +132,7 @@ class CourseManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeType (value: String) {
+  changeType (value: string) {
     this.setState({
       type: value
     })

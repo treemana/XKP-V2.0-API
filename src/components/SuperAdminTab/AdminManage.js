@@ -9,19 +9,19 @@ type Props = {
   data: Object
 }
 type States = {
-  name: String,
-  specialty: String,
-  classes: String,
-  acatemy: String,
-  grade: String,
+  name: string,
+  specialty: string,
+  classes: string,
+  acatemy: string,
+  grade: string,
   acatemyList: Array<Object>,
   specialtyList: Array<Object>,
   classList: Array<Object>,
-  gradeList: Array<String>,
+  gradeList: Array<string>,
   adminList: Array<Object>,
   visible: boolean,
-  initPwd: String,
-  userName: String,
+  initPwd: string,
+  userName: string,
   showTable: boolean
 }
 class AdminManage extends React.Component {
@@ -248,7 +248,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeAcatemy (value: String) {
+  changeAcatemy (value: string) {
     this.setState({
       acatemy: value
     })
@@ -270,7 +270,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeSpecialty (value: String) {
+  changeSpecialty (value: string) {
     this.setState({
       specialty: value
     })
@@ -292,12 +292,12 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeClass (value: String) {
+  changeClass (value: string) {
     this.setState({
       classes: value
     })
   }
-  changeGrade (value: String) {
+  changeGrade (value: string) {
     const { specialty } = this.state
     this.setState({
       grade: value

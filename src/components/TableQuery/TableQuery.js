@@ -9,17 +9,17 @@ type Props = {
   data: Object
 }
 type States = {
-  specialty: String,
-  classes: String,
-  acatemy: String,
-  grade: String,
+  specialty: string,
+  classes: string,
+  acatemy: string,
+  grade: string,
   dataSource: Array<Object>,
   specialtyList: Array<Object>,
   classList: Array<Object>,
-  gradeList: Array<String>,
-  showTable: Boolean,
+  gradeList: Array<string>,
+  showTable: boolean,
   columns: Array<Object>,
-  buttonClick: Boolean
+  buttonClick: boolean
 }
 class TableQuery extends React.Component {
   props: Props
@@ -321,7 +321,7 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeAcatemy (value: String) {
+  changeAcatemy (value: string) {
     this.setState({
       acatemy: value
     })
@@ -343,7 +343,7 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeSpecialty (value: String) {
+  changeSpecialty (value: string) {
     this.setState({
       specialty: value
     })
@@ -365,12 +365,12 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeClass (value: String) {
+  changeClass (value: string) {
     this.setState({
       classes: value
     })
   }
-  changeGrade (value: String) {
+  changeGrade (value: string) {
     const { specialty } = this.state
     this.setState({
       grade: value

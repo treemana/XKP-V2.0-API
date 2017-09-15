@@ -9,7 +9,7 @@ const Option = Select.Option
 type States = {
   columns: Array<Object>,
   dataSource: Array<Object>,
-  visible: Boolean,
+  visible: boolean,
   modalData: Object,
   courseData: Array<Object>
 }

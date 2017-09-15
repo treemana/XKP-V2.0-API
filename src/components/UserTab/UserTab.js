@@ -16,7 +16,7 @@ type Props = {
   data: Object
 }
 type States = {
-  active: String
+  active: string
 }
 class UserTab extends React.Component {
   props: Props

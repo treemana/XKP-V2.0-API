@@ -8,7 +8,7 @@ type Props = {
   data: Object
 }
 type States = {
-  name: String,
+  name: string,
   dataSource: Array<Object>
 }
 class SpecialtyManage extends React.Component {

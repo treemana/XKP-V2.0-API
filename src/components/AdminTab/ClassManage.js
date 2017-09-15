@@ -9,12 +9,12 @@ type Props = {
   data: Object
 }
 type States = {
-  name: String,
-  specialty: String,
-  grade: String,
-  showTable: booelan,
+  name: string,
+  specialty: string,
+  grade: string,
+  showTable: boolean,
   specialtyList: Array<Object>,
-  gradeList: Array<String>,
+  gradeList: Array<string>,
   dataSource: Array<Object>
 }
 class ClassManage extends React.Component {
@@ -172,12 +172,12 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeSpecialty (value: String) {
+  changeSpecialty (value: string) {
     this.setState({
       specialty: value
     })
   }
-  changeGrade (value: String) {
+  changeGrade (value: string) {
     this.setState({
       grade: value
     })

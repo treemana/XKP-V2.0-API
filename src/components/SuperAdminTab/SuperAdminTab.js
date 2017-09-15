@@ -15,7 +15,7 @@ type Props = {
   data: Object
 }
 type States = {
-  active: String
+  active: string
 }
 class SuperAdminTab extends React.Component {
   props: Props
