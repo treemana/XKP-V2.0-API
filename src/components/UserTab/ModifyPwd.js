@@ -96,7 +96,12 @@ class ModifyPwd extends React.Component {
       <Form onSubmit={this.handleSubmit} className={styles['login-form']}>
         <FormItem {...formItemLayout} label='旧密码'>
           {getFieldDecorator('oldPassword', {
-            rules: [{ required: true, message: '请输入旧密码' }]
+            rules: [{
+              required: true,
+              message: '请输入旧密码',
+              max: 20,
+              min: 6
+            }]
           })(
             <Input placeholder='请输入旧密码' />
           )}
@@ -104,7 +109,10 @@ class ModifyPwd extends React.Component {
         <FormItem {...formItemLayout} label='新密码'>
           {getFieldDecorator('password', {
             rules: [{
-              required: true, message: '请输入新密码'
+              required: true,
+              message: '请输入6-12位新密码',
+              max: 20,
+              min: 6
             }, {
               validator: this.checkConfirm
             }]
@@ -115,7 +123,10 @@ class ModifyPwd extends React.Component {
         <FormItem {...formItemLayout} label='确认密码'>
           {getFieldDecorator('confirm', {
             rules: [{
-              required: true, message: '请确认密码'
+              required: true,
+              message: '请确认密码',
+              max: 20,
+              min: 6
             }, {
               validator: this.checkPassword
             }]

@@ -4,15 +4,17 @@ import styles from './CourseManage.css'
 import { Table, Icon, Input, Select, Popconfirm } from 'antd'
 import universalFetch, { handleFetchError } from 'utils/fetch'
 const Option = Select.Option
-
 type Props = {
   data: Object
 }
 type States = {
   name: string,
+  nameError: boolean,
   dataSource: Array<Object>,
   score: string,
-  type: string
+  scoreError: boolean,
+  type: string,
+  typeError: boolean
 }
 class CourseManage extends React.Component {
   props: Props
@@ -21,9 +23,12 @@ class CourseManage extends React.Component {
     super(props)
     this.state = {
       name: '',
+      nameError: false,
       score: '',
+      scoreError: false,
       dataSource: [],
-      type: ''
+      type: '',
+      typeError: false
     }
     this.changeName = this.changeName.bind(this)
     this.changeScore = this.changeScore.bind(this)
@@ -92,8 +97,20 @@ class CourseManage extends React.Component {
   }
   addCourse () {
     const { data } = this.props
-    const { name, score, type } = this.state
+    const { name, nameError, score, scoreError, type, typeError } = this.state
+    type || this.setState({
+      typeError: true
+    })
+    name || this.setState({
+      nameError: true
+    })
+    score || this.setState({
+      scoreError: true
+    })
     if (!(name && score && type)) {
+      return
+    }
+    if (!(nameError && scoreError && typeError)) {
       return
     }
     let exam = false
@@ -134,17 +151,20 @@ class CourseManage extends React.Component {
   }
   changeType (value: string) {
     this.setState({
-      type: value
+      type: value,
+      typeError: !value
     })
   }
   changeName (e: Object) {
     this.setState({
-      name: e.target.value
+      name: e.target.value,
+      nameError: e.target.value.length > 30 || !e.target.value
     })
   }
   changeScore (e: Object) {
     this.setState({
-      score: e.target.value
+      score: e.target.value,
+      scoreError: e.target.value.length > 3 || !e.target.value
     })
   }
   render () {
@@ -172,15 +192,32 @@ class CourseManage extends React.Component {
     const baseSource = [{
       key: 999999,
       num: 0,
-      name: <Input style={{ width: '200px' }} placeholder='请填写课程名称' onChange={this.changeName}
-        value={this.state.name} />,
-      score: <Input style={{ width: '200px' }} placeholder='请填写学分' onChange={this.changeScore}
-        value={this.state.score} />,
-      type: <Select style={{ width: '200px' }} onChange={this.changeType} placeholder='请选择类型'
-        value={this.state.type}>
-        <Option value='考试'>考试</Option>
-        <Option value='考察'>考察</Option>
-      </Select>,
+      name: (
+        <span className={styles['input-span']}>
+          <Input className={this.state.nameError ? styles['error'] : null}
+            style={{ width: '200px' }} placeholder='请填写课程名称' onChange={this.changeName}
+            value={this.state.name} /><br />
+          <span className={styles['error-text']}>{this.state.nameError ? '请输入0-30位课程名称' : null}</span>
+        </span>
+      ),
+      score: (
+        <span className={styles['input-span']}>
+          <Input className={this.state.scoreError ? styles['error'] : null}
+            style={{ width: '200px' }} placeholder='请填写学分' onChange={this.changeScore}
+            value={this.state.score} />
+          <span className={styles['error-text']}>{this.state.scoreError ? '请输入正确学分' : null}</span>
+        </span>
+      ),
+      type: (
+        <div className={this.state.typeError ? [styles['new-input-span']] : styles['input-span']}>
+          <Select style={{ width: '200px' }} onChange={this.changeType} placeholder='请选择类型'
+            value={this.state.type}>
+            <Option value='考试'>考试</Option>
+            <Option value='考察'>考察</Option>
+          </Select>
+          <span className={styles['error-text']}>{this.state.typeError ? '请选择课程类型' : null}</span>
+        </div>
+      ),
       operate: <span className={styles['operate']} onClick={this.addCourse}><Icon type='plus-circle-o' />添加</span>
     }]
     return <div className={styles['main']}>

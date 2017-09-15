@@ -1,6 +1,12 @@
 .main {
   height: 100%;
   :global {
+    .ant-select-selection--single{
+      height: auto;
+    }
+    .ant-select-selection {
+      border: 0;
+    }
     .ant-table-fixed-header .ant-table-scroll:after {
       content: '';
     }
@@ -22,6 +28,52 @@
       border-radius: 0;
       text-align: center;
     }
+  }
+  div.input-span{
+    width: 202px;
+    box-sizing: border-box;
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    transition: all .3s cubic-bezier(.645,.045,.355,1);
+  }
+  .input-span {
+    position: relative;
+  }
+  .new-input-span {
+    width: 202px;
+    box-sizing: border-box;
+    display: inline-block;
+    border-radius: 4px;
+    transition: all .3s cubic-bezier(.645,.045,.355,1);
+    border:1px #f04134 solid;
+    position: relative;
+  }
+  .new-input-span:focus {
+    border-color: #f46e65;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(240,65,52,.2);
+  }
+  .error {
+    border-color: #f04134;
+
+  }
+  .error:focus {
+    border-color: #f46e65;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(240,65,52,.2);
+  }
+  div>.error-text{
+    top: 100%;
+  }
+  .error-text {
+    position: absolute;
+    white-space:nowrap;
+    left: 50%;
+    top: 130%;
+    transform: translateX(-50%);
+    color: #f46e65;
+    font-size: 12px;
   }
 }
 .operate {

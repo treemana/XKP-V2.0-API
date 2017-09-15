@@ -82,6 +82,8 @@ class TableQuery extends React.Component {
       const columns1 = json.data.map((item, index) => {
         return {
           title: item.name,
+          width: 70,
+          fixed: 'left',
           dataIndex: item.systemId,
           key: item.systemId,
           type: item.type

@@ -1,15 +1,14 @@
 // @flow
 import React from 'react'
 import styles from './ClassManage.css'
-import { Table, Input, Row, Col, Button, Popconfirm, Icon } from 'antd'
+import { Table, Form, Input, Row, Col, Button, Popconfirm, Icon } from 'antd'
 import universalFetch, { handleFetchError } from 'utils/fetch'
-
+const FormItem = Form.Item
 type Props = {
-  data: Object
+  data: Object,
+  form: Object
 }
 type States = {
-  num: string,
-  name: string,
   dataSource1: Array<Object>,
   dataSource2: Array<Object>,
   dataSource3: Array<Object>
@@ -20,8 +19,6 @@ class ClassManage extends React.Component {
   constructor (props: Props) {
     super(props)
     this.state = {
-      num: '',
-      name: '',
       dataSource1: [],
       dataSource2: [],
       dataSource3: []
@@ -121,22 +118,18 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeNum (e: Object) {
-    this.setState({
-      num: e.target.value
+  submitHandle = (e) => {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values)
+        this.addStudent(values)
+      }
     })
-  }
-  changeNname (e: Object) {
-    this.setState({
-      name: e.target.value
-    })
-  }
-  addStudent () {
+  };
+  addStudent (values) {
     const { data } = this.props
-    const { num, name } = this.state
-    if (!(num && name)) {
-      return
-    }
+    const { num, name } = values
     const postData = {
       classId: data.classId,
       studentNumber: num,
@@ -181,7 +174,8 @@ class ClassManage extends React.Component {
       dataIndex: 'operate',
       key: 'operate'
     }]
-    const { num, name, dataSource1, dataSource2, dataSource3 } = this.state
+    const { dataSource1, dataSource2, dataSource3 } = this.state
+    const { getFieldDecorator, getFieldsError } = this.props.form
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>
@@ -199,19 +193,45 @@ class ClassManage extends React.Component {
         </Row>
       </div>
       <div className={styles['add-member']}>
-        <Row>
-          <Col span={8}>
-            <Input value={num} placeholder='学号' style={{ width: '200px' }} onChange={this.changeNum} />
-          </Col>
-          <Col span={8}>
-            <Input value={name} placeholder='姓名' style={{ width: '200px' }} onChange={this.changeNname} />
-          </Col>
-          <Col span={8}>
-            <Button type='primary' onClick={this.addStudent} disabled={!num && !name}>添加</Button>
-          </Col>
-        </Row>
+        <Form layout='inline' onSubmit={this.submitHandle}>
+          <Row>
+            <Col span={8}>
+              <FormItem>
+                {getFieldDecorator('num', {
+                  rules: [{ required: true, len:10, message: '请输入十位学号!' }]
+                })(
+                  <Input prefix={<Icon type='user' style={{ fontSize: 13 }} />}
+                    style={{ width: '200px' }} placeholder='学号' />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem>
+                {getFieldDecorator('name', {
+                  rules: [{ required: true, max:20, message: '请输入正确姓名!' }]
+                })(
+                  <Input prefix={<Icon type='user' style={{ fontSize: 13 }} />}
+                    style={{ width: '200px' }} placeholder='姓名' />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <Button
+                type='primary'
+                htmlType={'submit'}
+                disabled={hasErrors(getFieldsError())}
+              >
+                添加
+              </Button>
+            </Col>
+          </Row>
+        </Form>
       </div>
     </div>
   }
 }
-export default ClassManage
+const newClassManage = Form.create()(ClassManage)
+export default newClassManage
+function hasErrors (fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field])
+}

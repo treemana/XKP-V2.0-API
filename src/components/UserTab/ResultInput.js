@@ -25,11 +25,13 @@ class ResultInput extends React.Component {
     this.state = {
       columns: [{
         title: '学号',
+        width: 70,
         dataIndex: 'num',
         key: 'num',
         fixed: 'left'
       }, {
         title: '姓名',
+        width: 70,
         dataIndex: 'name',
         key: 'name',
         fixed: 'left'
@@ -187,6 +189,7 @@ class ResultInput extends React.Component {
           courseData: json.data,
           columns: columns.concat(columns1).concat([{
             title: '操作',
+            width: 50,
             dataIndex: 'operate',
             key: 'operate',
             fixed: 'right'
