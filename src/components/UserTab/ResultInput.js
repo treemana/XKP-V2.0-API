@@ -26,11 +26,13 @@ class ResultInput extends React.Component {
       columns: [{
         title: '学号',
         dataIndex: 'num',
-        key: 'num'
+        key: 'num',
+        fixed: 'left'
       }, {
         title: '姓名',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        fixed: 'left'
       }],
       dataSource: [],
       visible: false,
@@ -79,24 +81,24 @@ class ResultInput extends React.Component {
           },
           body: JSON.stringify(data)
         })
-        .then(res => res.json())
-        .then((json) => {
-          console.log(json)
-          if (json.code !== 0) {
-            throw new Error(JSON.stringify(
-              {
-                code: json.code,
-                message: json.message
-              }
-            ), 'ResultInput.js')
-          }
-          this.getScore()
-          this.setState({
-            visible: false
+          .then(res => res.json())
+          .then((json) => {
+            console.log(json)
+            if (json.code !== 0) {
+              throw new Error(JSON.stringify(
+                {
+                  code: json.code,
+                  message: json.message
+                }
+              ), 'ResultInput.js')
+            }
+            this.getScore()
+            this.setState({
+              visible: false
+            })
+            message.success('修改成功')
           })
-          message.success('修改成功')
-        })
-        .catch(handleFetchError)
+          .catch(handleFetchError)
       }
     })
   }
@@ -124,79 +126,80 @@ class ResultInput extends React.Component {
     const updateScore = this.updateScore
     let source = []
     universalFetch(`${__API__}score/${data.classId}`)
-    .then(res => res.json())
-    .then((json) => {
-      console.log(json)
-      if (json.code !== 0) {
-        throw new Error(JSON.stringify(
-          {
-            code: json.code,
-            message: json.message
-          }
-        ), 'CourseManage.js')
-      }
-      json.data.map((item, index) => {
-        const base = {
-          key: index,
-          num: item.studentNumber,
-          name: item.name,
-          operate: <span className={styles['operate']} onClick={function () { updateScore(item) }}>
-            <Icon type='edit' />修改</span>
+      .then(res => res.json())
+      .then((json) => {
+        console.log(json)
+        if (json.code !== 0) {
+          throw new Error(JSON.stringify(
+            {
+              code: json.code,
+              message: json.message
+            }
+          ), 'CourseManage.js')
         }
-        const more = {}
-        item.marks.map((mark, i) => {
-          const m = {
-            [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
+        json.data.map((item, index) => {
+          const base = {
+            key: item.studentNumber,
+            num: item.studentNumber,
+            name: item.name,
+            operate: <span className={styles['operate']} onClick={() => { updateScore(item) }}>
+              <Icon type='edit' />修改</span>
           }
-          Object.assign(more, m)
+          const more = {}
+          item.marks.map((mark, i) => {
+            const m = {
+              [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
+            }
+            Object.assign(more, m)
+          })
+          source.push(Object.assign(base, more))
         })
-        source.push(Object.assign(base, more))
+        this.setState({
+          dataSource: source
+        })
       })
-      this.setState({
-        dataSource: source
-      })
-    })
-    .catch(handleFetchError)
+      .catch(handleFetchError)
   }
   getCourse () {
     const { data } = this.props
     const { columns } = this.state
     universalFetch(`${__API__}course/${data.classId}`)
-    .then(res => res.json())
-    .then((json) => {
-      console.log(json)
-      if (json.code !== 0) {
-        throw new Error(JSON.stringify(
-          {
-            code: json.code,
-            message: json.message
-          }
-        ), 'CourseManage.js')
-      }
-      const columns1 = json.data.map((item, index) => {
-        return {
-          title: item.name,
-          dataIndex: item.systemId,
-          key: item.systemId,
-          type: item.type
+      .then(res => res.json())
+      .then((json) => {
+        console.log(json)
+        if (json.code !== 0) {
+          throw new Error(JSON.stringify(
+            {
+              code: json.code,
+              message: json.message
+            }
+          ), 'CourseManage.js')
         }
+        const columns1 = json.data.map((item, index) => {
+          return {
+            title: <span>{item.name}<br />({item.credit})</span>,
+            dataIndex: item.systemId,
+            key: item.systemId,
+            type: item.type
+          }
+        })
+        this.setState({
+          courseData: json.data,
+          columns: columns.concat(columns1).concat([{
+            title: '操作',
+            dataIndex: 'operate',
+            key: 'operate',
+            fixed: 'right'
+          }])
+        })
       })
-      this.setState({
-        courseData: json.data,
-        columns: columns.concat(columns1).concat([{
-          title: '操作',
-          dataIndex: 'operate',
-          key: 'operate'
-        }])
-      })
-    })
-    .catch(handleFetchError)
+      .catch(handleFetchError)
   }
   render () {
     const { getFieldDecorator } = this.props.form
     const { columns, dataSource, modalData, courseData } = this.state
     return <div className={styles['result-main']}>
-      <Table columns={columns} pagination={false} dataSource={dataSource} />
+      <Table columns={columns} pagination={false} dataSource={dataSource} scroll={{ x: '150%' }} />
       <Modal
         title='修改成绩'
         visible={this.state.visible}
@@ -205,7 +208,7 @@ class ResultInput extends React.Component {
         width={400}
         footer=''
         maskClosable={false}
-        >
+      >
         <div className={styles['modal-main']}>
           <Row>
             <Col span={12}>
@@ -223,7 +226,7 @@ class ResultInput extends React.Component {
           </Row>
           <Form onSubmit={this.handleSubmit}>
             {
-              courseData.map((item, index) => {
+              modalData['marks'] && courseData.map((item, index) => {
                 if (item.type) {
                   return <FormItem
                     label={item.name}
@@ -232,6 +235,7 @@ class ResultInput extends React.Component {
                     key={index}
                   >
                     {getFieldDecorator(item.systemId.toString(), {
+                      initialValue: modalData['marks'][index]['examination']
                     })(
                       <Input />
                     )}
@@ -244,6 +248,7 @@ class ResultInput extends React.Component {
                     key={index}
                   >
                     {getFieldDecorator(item.systemId.toString(), {
+                      initialValue: modalData['marks'][index]['inspection']
                     })(
                       <Select>
                         <Option value='优秀'>优秀</Option>
