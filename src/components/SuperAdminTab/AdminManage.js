@@ -239,7 +239,10 @@ class AdminManage extends React.Component {
   }
   changeAcatemy = (value: string) => {
     this.setState({
-      acatemy: value
+      acatemy: value,
+      specialty: '',
+      classes: '',
+      grade: '',
     })
     universalFetch(`${__API__}specialty/${value}`)
     .then(res => res.json())
@@ -261,7 +264,9 @@ class AdminManage extends React.Component {
   }
   changeSpecialty = (value: string) => {
     this.setState({
-      specialty: value
+      specialty: value,
+      classes: '',
+      grade: '',
     })
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
@@ -289,7 +294,8 @@ class AdminManage extends React.Component {
   changeGrade = (value: string) => {
     const { specialty } = this.state
     this.setState({
-      grade: value
+      grade: value,
+      classes: ''
     })
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${value}`)
     .then(res => res.json())
@@ -354,7 +360,7 @@ class AdminManage extends React.Component {
             </Select>
           </Col>
           <Col span={5}>
-            <Select style={{ width: 150 }} onChange={this.changeSpecialty}
+            <Select style={{ width: 150 }} key={acatemy} onChange={this.changeSpecialty}
               placeholder='请选择专业' disabled={!acatemy}>
               {
                 specialtyList.map((item, index) => {
@@ -364,7 +370,7 @@ class AdminManage extends React.Component {
             </Select>
           </Col>
           <Col span={5}>
-            <Select style={{ width: 150 }} onChange={this.changeGrade}
+            <Select style={{ width: 150 }} key={specialty+acatemy} onChange={this.changeGrade}
               placeholder='请选择年级' disabled={!(specialty && acatemy)}>
               {
                 gradeList.map((item, index) => {
@@ -374,7 +380,7 @@ class AdminManage extends React.Component {
             </Select>
           </Col>
           <Col span={5}>
-            <Select style={{ width: 150 }} onChange={this.changeClass}
+            <Select style={{ width: 150 }} key={acatemy+specialty+grade} onChange={this.changeClass}
               placeholder='请选择班级' disabled={!(acatemy && specialty && grade)}>
               {
                 classList.map((item, index) => {

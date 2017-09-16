@@ -41,13 +41,11 @@ class TableQuery extends React.Component {
         title: '学号',
         dataIndex: 'num',
         width: 100,
-        fixed: 'left',
         key: 'num'
       }, {
         title: '姓名',
         dataIndex: 'name',
         width: 100,
-        fixed: 'left',
         key: 'name'
       }],
       buttonClick: false
