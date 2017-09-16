@@ -78,7 +78,7 @@ class Basic extends React.Component {
       duty: post,
       dutyDesc: postbz
     }
-    console.log('data',data);
+    console.log('data', data)
     universalFetch(`${__API__}base-score`, {
       method: 'PUT',
       headers: {
@@ -192,6 +192,8 @@ class Basic extends React.Component {
     }]
     const { dataSource, modalData } = this.state
     const { getFieldDecorator, getFieldValue } = this.props.form
+    const flag1 = !(getFieldValue('xsky') === '' || getFieldValue('xsky') === '0')
+    const flag2 = !(getFieldValue('post') === '' || getFieldValue('post') === '0')
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
@@ -268,15 +270,20 @@ class Basic extends React.Component {
               <Col span={12}>
                 <div className={styles['row']}>
                   <FormItem
-                    key={'xskybz'+!(getFieldValue('xsky') === '' || getFieldValue('xsky') == '0').toString()}
+                    key={'xskybz' + flag1.toString()}
                     {...formItemLayout}
                     label={'学术科研备注：'}>
                     {getFieldDecorator('xskybz', {
-                      rules: [{ required: !(getFieldValue('xsky') === '' || getFieldValue('xsky') == '0'), max: 50, message: '请确认学术科研备注!' }],
-                      initialValue: (getFieldValue('xsky') === '' || getFieldValue('xsky') == '0') ? '':modalData.academicDesc
+                      rules: [{
+                        required: flag1,
+                        max: 50,
+                        message: '请确认学术科研备注!' }],
+                      initialValue: !flag1
+                          ? '' : modalData.academicDesc
                     })(
                       <Input style={{ width: '150px' }}
-                             disabled={getFieldValue('xsky') === '' || getFieldValue('xsky') == '0'} placeholder='请输入学术科研备注' />
+                        disabled={!flag1}
+                        placeholder='请输入学术科研备注' />
                     )}
                   </FormItem>
                 </div>
@@ -300,15 +307,19 @@ class Basic extends React.Component {
               <Col span={12}>
                 <div className={styles['row']}>
                   <FormItem
-                    key={'postbz'+!(getFieldValue('post') === '' || getFieldValue('post') == '0').toString()}
+                    key={'postbz' + flag2.toString()}
                     {...formItemLayout}
                     label={'职务分备注：'}>
                     {getFieldDecorator('postbz', {
-                      rules: [{ required: !(getFieldValue('post') === '' || getFieldValue('post') == '0'), max: 20, message: '请确认职务分备注!' }],
-                      initialValue: (getFieldValue('post') === '' || getFieldValue('post') == '0')?'':modalData.dutyDesc
+                      rules: [{
+                        required: flag2,
+                        max: 20,
+                        message: '请确认职务分备注!' }],
+                      initialValue: !flag2 ? '' : modalData.dutyDesc
                     })(
                       <Input style={{ width: '150px' }}
-                             disabled={getFieldValue('post') === '' || getFieldValue('post') == '0'} placeholder='请输入职务分备注' />
+                        disabled={!flag2}
+                        placeholder='请输入职务分备注' />
                     )}
                   </FormItem>
                 </div>
