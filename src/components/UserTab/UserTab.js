@@ -26,9 +26,8 @@ class UserTab extends React.Component {
     this.state = {
       active: '1'
     }
-    this.changeTab = this.changeTab.bind(this)
   }
-  changeTab (activeKey: string) {
+  changeTab = (activeKey: string) => {
     const { data } = this.props
     const { active } = this.state
     if (activeKey === '1') {

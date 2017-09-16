@@ -20,9 +20,8 @@ class Home extends React.Component {
     this.state = {
       data: {}
     }
-    this.renderComponent = this.renderComponent.bind(this)
   }
-  renderComponent () {
+  renderComponent = () => {
     const { data } = this.state
     if (data.data) {
       switch (data.data.type) {

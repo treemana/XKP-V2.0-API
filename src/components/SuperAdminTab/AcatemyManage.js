@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './AcatemyManage.css'
 import { Table, Icon, Input, Popconfirm } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
 type States = {
   name: string,
@@ -16,12 +16,8 @@ class AcatemyManage extends React.Component {
       name: '',
       dataSource: []
     }
-    this.changeName = this.changeName.bind(this)
-    this.addAcatemy = this.addAcatemy.bind(this)
-    this.getAcatemy = this.getAcatemy.bind(this)
-    this.delAcatemy = this.delAcatemy.bind(this)
   }
-  delAcatemy (item: Object) {
+  delAcatemy = (item: Object) => {
     universalFetch(`${__API__}academy/${item.systemId}`, {
       method: 'DELETE',
       headers: {
@@ -42,7 +38,7 @@ class AcatemyManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getAcatemy () {
+  getAcatemy = () => {
     const delAcatemy = this.delAcatemy
     universalFetch(`${__API__}academy`)
     .then(res => res.json())
@@ -76,7 +72,7 @@ class AcatemyManage extends React.Component {
   componentWillMount () {
     this.getAcatemy()
   }
-  addAcatemy () {
+  addAcatemy = () => {
     const { name } = this.state
     const data = {
       name
@@ -105,7 +101,7 @@ class AcatemyManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeName (e: Object) {
+  changeName = (e: Object) => {
     this.setState({
       name: e.target.value
     })

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styles from './ModifyPwd.css'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 import { Form, Icon, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 
@@ -20,16 +20,9 @@ class ModifyPwd extends React.Component {
     this.state = {
       confirmDirty: false
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.checkConfirm = this.checkConfirm.bind(this)
-    this.checkPassword = this.checkPassword.bind(this)
-    this.handleConfirmBlur = this.handleConfirmBlur.bind(this)
-    this.handleReset = this.handleReset.bind(this)
   }
   handleReset = () => {
     this.props.form.resetFields()
-  }
-  componentWillMount () {
   }
   handleConfirmBlur = (e: Object) => {
     const value = e.target.value
@@ -51,7 +44,7 @@ class ModifyPwd extends React.Component {
     callback()
   }
 
-  handleSubmit (e: Object) {
+  handleSubmit = (e: Object) => {
     const { data } = this.props
     e.preventDefault()
     const putData = {

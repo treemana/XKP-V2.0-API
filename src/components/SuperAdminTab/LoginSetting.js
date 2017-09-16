@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './LoginSetting.css'
 import { Row, Col, Button, Table, Radio, message } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 const RadioGroup = Radio.Group
 
 type States = {
@@ -23,16 +23,12 @@ class LoginSetting extends React.Component {
       selectAcatemy: [],
       selectGrade: []
     }
-    this.changeRadio = this.changeRadio.bind(this)
-    this.sumbit = this.sumbit.bind(this)
-    this.getAcatemy = this.getAcatemy.bind(this)
-    this.getGrade = this.getGrade.bind(this)
   }
   componentWillMount () {
     this.getAcatemy()
     this.getGrade()
   }
-  sumbit () {
+  sumbit = () => {
     const { radioValue, selectAcatemy, selectGrade } = this.state
     let status
     if (radioValue === 'true') {
@@ -66,7 +62,7 @@ class LoginSetting extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getGrade () {
+  getGrade = () => {
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
@@ -90,7 +86,7 @@ class LoginSetting extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getAcatemy () {
+  getAcatemy = () => {
     universalFetch(`${__API__}academy`)
     .then(res => res.json())
     .then((json) => {
@@ -114,7 +110,7 @@ class LoginSetting extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeRadio (e: Object) {
+  changeRadio = (e: Object) => {
     console.log(e.target.value)
     this.setState({
       radioValue: e.target.value

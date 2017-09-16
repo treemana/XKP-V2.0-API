@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './CourseManage.css'
 import { Table, Icon, Input, Select, Popconfirm } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 const Option = Select.Option
 type Props = {
   data: Object
@@ -30,17 +30,11 @@ class CourseManage extends React.Component {
       type: '',
       typeError: false
     }
-    this.changeName = this.changeName.bind(this)
-    this.changeScore = this.changeScore.bind(this)
-    this.changeType = this.changeType.bind(this)
-    this.addCourse = this.addCourse.bind(this)
-    this.getCourse = this.getCourse.bind(this)
-    this.delCourse = this.delCourse.bind(this)
   }
   componentWillMount () {
     this.getCourse()
   }
-  delCourse (item: Object) {
+  delCourse = (item: Object) => {
     universalFetch(`${__API__}course/${item.systemId}`, {
       method: 'DELETE',
       headers: {
@@ -61,7 +55,7 @@ class CourseManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getCourse () {
+  getCourse = () => {
     const { data } = this.props
     const delCourse = this.delCourse
     universalFetch(`${__API__}course/${data.classId}`)
@@ -95,7 +89,7 @@ class CourseManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  addCourse () {
+  addCourse = () => {
     const { data } = this.props
     const { name, nameError, score, scoreError, type, typeError } = this.state
     type || this.setState({
@@ -112,9 +106,6 @@ class CourseManage extends React.Component {
       return
     }
     if ((nameError && scoreError && typeError)) {
-      console.log(nameError + 'nameError')
-      console.log(scoreError + 'scoreError')
-      console.log(typeError + 'typeError')
       return
     }
     let exam = false
@@ -153,19 +144,19 @@ class CourseManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeType (value: string) {
+  changeType = (value: string) => {
     this.setState({
       type: value,
       typeError: !value
     })
   }
-  changeName (e: Object) {
+  changeName = (e: Object) => {
     this.setState({
       name: e.target.value,
       nameError: e.target.value.length > 30 || !e.target.value
     })
   }
-  changeScore (e: Object) {
+  changeScore = (e: Object) => {
     this.setState({
       score: e.target.value,
       scoreError: e.target.value.length > 3 || !e.target.value

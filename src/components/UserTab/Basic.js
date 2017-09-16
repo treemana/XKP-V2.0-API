@@ -4,7 +4,7 @@ import styles from './Basic.css'
 import { Table, Icon, Form, Input, Select, Modal, Row, Col, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
 type Props = {
   data: Object,
@@ -25,12 +25,8 @@ class Basic extends React.Component {
       modalData: {},
       visible: false
     }
-    this.getData = this.getData.bind(this)
-    this.updateScore = this.updateScore.bind(this)
-    this.handleOk = this.handleOk.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
   }
-  getTableData () {
+  getTableData = () => {
     const { data } = this.props
     const updateScore = this.updateScore
     universalFetch(`${__API__}base-score/${data.classId}`)
@@ -64,12 +60,12 @@ class Basic extends React.Component {
     })
     .catch(handleFetchError)
   }
-  handleCancel () {
+  handleCancel = () => {
     this.setState({
       visible: false
     })
   }
-  handleOk (values) {
+  handleOk = (values) => {
     const { modalData } = this.state
     const { cxpd, dy, wt, xsky, post, xskybz, postbz } = values
     const data = {
@@ -111,17 +107,10 @@ class Basic extends React.Component {
   componentWillMount () {
     this.getTableData()
   }
-  updateScore (item: Object) {
+  updateScore = (item: Object) => {
     this.setState({
       visible: true,
-      modalData: item,
-      cxpd: item.behavior,
-      dy: item.moral,
-      wt: item.activity,
-      xsky: item.academic,
-      xskybz: item.academicDesc,
-      post: item.duty,
-      postbz: item.dutyDesc
+      modalData: item
     })
   }
   submitHandle = () => {
@@ -132,7 +121,7 @@ class Basic extends React.Component {
       }
     })
   }
-  getData () {
+  getData = () => {
     const { data } = this.props
     const updateScore = this.updateScore
     universalFetch(`${__API__}base-score/${data.classId}`)

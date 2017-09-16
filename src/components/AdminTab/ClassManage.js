@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './ClassManage.css'
 import { Table, Icon, Input, Select, Row, Col, Button, Popconfirm } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 const Option = Select.Option
 
 type Props = {
@@ -31,20 +31,12 @@ class ClassManage extends React.Component {
       gradeList: [],
       dataSource: []
     }
-    this.changeName = this.changeName.bind(this)
-    this.changeSpecialty = this.changeSpecialty.bind(this)
-    this.changeGrade = this.changeGrade.bind(this)
-    this.queryClass = this.queryClass.bind(this)
-    this.getSpecialty = this.getSpecialty.bind(this)
-    this.getGrade = this.getGrade.bind(this)
-    this.delClass = this.delClass.bind(this)
-    this.addClass = this.addClass.bind(this)
   }
   componentWillMount () {
     this.getSpecialty()
     this.getGrade()
   }
-  addClass () {
+  addClass = () => {
     const { name, specialty, grade } = this.state
     if (!name) {
       return
@@ -79,7 +71,7 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  delClass (item: Object) {
+  delClass = (item: Object) => {
     universalFetch(`${__API__}class/${item.systemId}`, {
       method: 'DELETE',
       headers: {
@@ -100,7 +92,7 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getGrade () {
+  getGrade = () => {
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
@@ -119,7 +111,7 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getSpecialty () {
+  getSpecialty = () => {
     const { data } = this.props
     universalFetch(`${__API__}specialty/${data.academyId}`)
     .then(res => res.json())
@@ -139,7 +131,7 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  queryClass () {
+  queryClass = () => {
     const delClass = this.delClass
     const { specialty, grade } = this.state
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${grade}`)
@@ -172,17 +164,17 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeSpecialty (value: string) {
+  changeSpecialty = (value: string) => {
     this.setState({
       specialty: value
     })
   }
-  changeGrade (value: string) {
+  changeGrade = (value: string) => {
     this.setState({
       grade: value
     })
   }
-  changeName (e: Object) {
+  changeName = (e: Object) => {
     this.setState({
       name: e.target.value
     })

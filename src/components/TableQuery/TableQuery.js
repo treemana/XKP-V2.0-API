@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './TableQuery.css'
 import { Table, Select, Icon, Row, Col, Button } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 const Option = Select.Option
 type Props = {
   data: Object
@@ -15,6 +15,7 @@ type States = {
   dataSource: Array<Object>,
   specialtyList: Array<Object>,
   classList: Array<Object>,
+  acatemyList: Array<Object>,
   gradeList: Array<string>,
   showTable: boolean,
   columns: Array<Object>,
@@ -51,18 +52,8 @@ class TableQuery extends React.Component {
       }],
       buttonClick: false
     }
-    this.changeAcatemy = this.changeAcatemy.bind(this)
-    this.changeSpecialty = this.changeSpecialty.bind(this)
-    this.changeClass = this.changeClass.bind(this)
-    this.changeGrade = this.changeGrade.bind(this)
-    this.queryData = this.queryData.bind(this)
-    this.getAcatemy = this.getAcatemy.bind(this)
-    this.downLoad = this.downLoad.bind(this)
-    this.getSpecialty = this.getSpecialty.bind(this)
-    this.getClass = this.getClass.bind(this)
-    this.getCourse = this.getCourse.bind(this)
   }
-  getCourse () {
+  getCourse = () => {
     const { columns, classes, buttonClick } = this.state
     if (buttonClick) {
       return
@@ -153,7 +144,7 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getSpecialty () {
+  getSpecialty = () => {
     const { data } = this.props
     if (data.type === 'C') {
       universalFetch(`${__API__}specialty-name/${data.specialtyId}`)
@@ -179,7 +170,7 @@ class TableQuery extends React.Component {
       .catch(handleFetchError)
     }
   }
-  getClass () {
+  getClass = () => {
     const { data } = this.props
     if (data.type === 'C') {
       universalFetch(`${__API__}class/${data.classId}`)
@@ -205,7 +196,7 @@ class TableQuery extends React.Component {
       .catch(handleFetchError)
     }
   }
-  downLoad () {
+  downLoad = () => {
     const { classes } = this.state
     universalFetch(`${__API__}benchmark/download/${classes}`)
     .then(res => res.json())
@@ -234,7 +225,7 @@ class TableQuery extends React.Component {
       })
     }
   }
-  getAcatemy () {
+  getAcatemy = () => {
     const { data } = this.props
     if (data.type === 'C' || data.type === 'B') {
       universalFetch(`${__API__}academy/${data.academyId}`)
@@ -287,7 +278,7 @@ class TableQuery extends React.Component {
       .catch(handleFetchError)
     }
   }
-  queryData () {
+  queryData = () => {
     this.getCourse()
     const { classes } = this.state
     let source = []
@@ -336,7 +327,7 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeAcatemy (value: string) {
+  changeAcatemy = (value: string) => {
     this.setState({
       acatemy: value,
       specialty: '',
@@ -361,7 +352,7 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeSpecialty (value: string) {
+  changeSpecialty = (value: string) => {
     this.setState({
       specialty: value,
       grade: '',
@@ -385,12 +376,12 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeClass (value: string) {
+  changeClass = (value: string) => {
     this.setState({
       classes: value
     })
   }
-  changeGrade (value: string) {
+  changeGrade = (value: string) => {
     const { specialty } = this.state
     this.setState({
       grade: value,
@@ -413,12 +404,6 @@ class TableQuery extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
-  componentWillUpdate () {
-    if (this.state.showTable) {
-      const len = document.getElementsByClassName('ant-table-body').length
-      this.table = document.getElementsByClassName('ant-table-body')[len - 1]
-    }
   }
   render () {
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList,

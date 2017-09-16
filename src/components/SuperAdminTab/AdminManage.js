@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './AdminManage.css'
 import { Table, Icon, Input, Select, Row, Col, Button, Popconfirm, Modal } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 const Option = Select.Option
 
 type Props = {
@@ -45,19 +45,8 @@ class AdminManage extends React.Component {
       userName: '',
       showTable: false
     }
-    this.changeName = this.changeName.bind(this)
-    this.changeAcatemy = this.changeAcatemy.bind(this)
-    this.changeSpecialty = this.changeSpecialty.bind(this)
-    this.changeClass = this.changeClass.bind(this)
-    this.changeGrade = this.changeGrade.bind(this)
-    this.queryAdmin = this.queryAdmin.bind(this)
-    this.getAcatemy = this.getAcatemy.bind(this)
-    this.addAdmin = this.addAdmin.bind(this)
-    this.delAdmin = this.delAdmin.bind(this)
-    this.handleOk = this.handleOk.bind(this)
-    this.resetPwd = this.resetPwd.bind(this)
   }
-  resetPwd (item: Object) {
+  resetPwd = (item: Object) => {
     universalFetch(`${__API__}manager/reset/${item.systemId}`, {
       method: 'PUT',
       headers: {
@@ -83,7 +72,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  handleOk () {
+  handleOk = () => {
     this.setState({
       visible: false
     })
@@ -91,7 +80,7 @@ class AdminManage extends React.Component {
   componentWillMount () {
     this.getAcatemy()
   }
-  delAdmin (item: Object) {
+  delAdmin = (item: Object) => {
     universalFetch(`${__API__}manager/${item.systemId}`, {
       method: 'DELETE',
       headers: {
@@ -112,7 +101,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  addAdmin () {
+  addAdmin = () => {
     const { name, specialty, classes, acatemy, grade } = this.state
     if (!name) {
       return
@@ -153,7 +142,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getAcatemy () {
+  getAcatemy = () => {
     const { data } = this.props
     console.log(data)
     if (data.academyId) {
@@ -197,7 +186,7 @@ class AdminManage extends React.Component {
       .catch(handleFetchError)
     }
   }
-  queryAdmin () {
+  queryAdmin = () => {
     const delAdmin = this.delAdmin
     const resetPwd = this.resetPwd
     const { specialty, classes, acatemy, grade } = this.state
@@ -248,7 +237,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeAcatemy (value: string) {
+  changeAcatemy = (value: string) => {
     this.setState({
       acatemy: value
     })
@@ -270,7 +259,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeSpecialty (value: string) {
+  changeSpecialty = (value: string) => {
     this.setState({
       specialty: value
     })
@@ -292,12 +281,12 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeClass (value: string) {
+  changeClass = (value: string) => {
     this.setState({
       classes: value
     })
   }
-  changeGrade (value: string) {
+  changeGrade = (value: string) => {
     const { specialty } = this.state
     this.setState({
       grade: value
@@ -320,7 +309,7 @@ class AdminManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeName (e: Object) {
+  changeName = (e: Object) => {
     this.setState({
       name: e.target.value
     })

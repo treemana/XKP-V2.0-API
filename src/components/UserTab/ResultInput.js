@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styles from './ResultInput.css'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
@@ -40,14 +40,8 @@ class ResultInput extends React.Component {
       modalData: {},
       courseData: []
     }
-    this.getCourse = this.getCourse.bind(this)
-    this.getScore = this.getScore.bind(this)
-    this.updateScore = this.updateScore.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-    this.handleOk = this.handleOk.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
-  handleSubmit (e: Object) {
+  handleSubmit = (e: Object) => {
     const { modalData, courseData } = this.state
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
@@ -103,9 +97,9 @@ class ResultInput extends React.Component {
       }
     })
   }
-  handleOk () {
+  handleOk = () => {
   }
-  handleCancel () {
+  handleCancel = () => {
     this.setState({
       visible: false
     })
@@ -114,10 +108,7 @@ class ResultInput extends React.Component {
     this.getCourse()
     this.getScore()
   }
-  componentDidMount () {
-    this.table = document.getElementsByClassName('ant-table-body')[3]
-  }
-  updateScore (item: Object) {
+  updateScore = (item: Object) => {
     console.log(this.state.courseData)
     console.log(item)
     this.setState({
@@ -125,7 +116,7 @@ class ResultInput extends React.Component {
       modalData: item
     })
   }
-  getScore () {
+  getScore = () => {
     const { data } = this.props
     const updateScore = this.updateScore
     let source = []
@@ -164,7 +155,7 @@ class ResultInput extends React.Component {
       })
       .catch(handleFetchError)
   }
-  getCourse () {
+  getCourse = () => {
     const { data } = this.props
     const { columns } = this.state
     universalFetch(`${__API__}course/${data.classId}`)

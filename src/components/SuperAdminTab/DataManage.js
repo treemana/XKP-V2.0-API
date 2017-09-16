@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './DataManage.css'
 import { Table, Icon, Input, Button, Spin, message, Popconfirm } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
 type States = {
   grade: string,
@@ -18,16 +18,11 @@ class DataManage extends React.Component {
       loading: false,
       dataSource: []
     }
-    this.changeGrade = this.changeGrade.bind(this)
-    this.startTerm = this.startTerm.bind(this)
-    this.getGrade = this.getGrade.bind(this)
-    this.delGrade = this.delGrade.bind(this)
-    this.addGrade = this.addGrade.bind(this)
   }
   componentWillMount () {
     this.getGrade()
   }
-  addGrade () {
+  addGrade = () => {
     const { grade } = this.state
     const postData = {
       grade
@@ -56,7 +51,7 @@ class DataManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  delGrade (item: Object) {
+  delGrade = (item: string) => {
     universalFetch(`${__API__}grade/${item}`, {
       method: 'DELETE',
       headers: {
@@ -77,7 +72,7 @@ class DataManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  startTerm () {
+  startTerm = () => {
     this.setState({
       loading: true
     })
@@ -100,7 +95,7 @@ class DataManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getGrade () {
+  getGrade = () => {
     const delGrade = this.delGrade
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
@@ -130,7 +125,7 @@ class DataManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeGrade (e: Object) {
+  changeGrade = (e: Object) => {
     this.setState({
       grade: e.target.value
     })

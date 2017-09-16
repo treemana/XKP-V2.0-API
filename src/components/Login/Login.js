@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styles from './Login.css'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 import { Form, Icon, Input, Button } from 'antd'
 const FormItem = Form.Item
 
@@ -11,13 +11,7 @@ type Props = {
 }
 class Login extends React.Component {
   props: Props
-  constructor (props: Props) {
-    super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-  componentWillMount () {
-  }
-  handleSubmit (e: Object) {
+  handleSubmit = (e: Object) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {

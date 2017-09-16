@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './SpecialtyManage.css'
 import { Table, Icon, Input, Popconfirm } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
 type Props = {
   data: Object
@@ -20,12 +20,8 @@ class SpecialtyManage extends React.Component {
       name: '',
       dataSource: []
     }
-    this.changeName = this.changeName.bind(this)
-    this.addSpeciaty = this.addSpeciaty.bind(this)
-    this.getSpeciaty = this.getSpeciaty.bind(this)
-    this.delSpeciaty = this.delSpeciaty.bind(this)
   }
-  delSpeciaty (item: Object) {
+  delSpeciaty = (item: Object) => {
     universalFetch(`${__API__}specialty/${item.systemId}`, {
       method: 'DELETE',
       headers: {
@@ -46,7 +42,7 @@ class SpecialtyManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getSpeciaty () {
+  getSpeciaty = () => {
     const { data } = this.props
     const delSpeciaty = this.delSpeciaty
     universalFetch(`${__API__}specialty/${data.academyId}`)
@@ -81,7 +77,7 @@ class SpecialtyManage extends React.Component {
   componentWillMount () {
     this.getSpeciaty()
   }
-  addSpeciaty () {
+  addSpeciaty = () => {
     const { data } = this.props
     const { name } = this.state
     const postData = {
@@ -115,7 +111,7 @@ class SpecialtyManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeName (e: Object) {
+  changeName = (e: Object) => {
     this.setState({
       name: e.target.value
     })

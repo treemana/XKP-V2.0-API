@@ -5,7 +5,6 @@
 
 import fetch from 'isomorphic-fetch'
 import { notification } from 'antd'
-// import R from 'ramda'
 import merge from 'lodash.merge'
 type Params = {
   path: string,
@@ -38,7 +37,6 @@ export function handleFetchError (e: Error, title: string = '请求异常') {
     MatchErr = false
   }
   console.error(errInfo)
-  // $FlowFixMe
   if (MatchErr && (errInfo.code === 2)) {
     localStorage.setItem('token', '')
     const origin = window.location.origin

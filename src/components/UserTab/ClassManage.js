@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './ClassManage.css'
 import { Table, Form, Input, Row, Col, Button, Popconfirm, Icon } from 'antd'
-import universalFetch, { handleFetchError } from 'utils/fetch'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 const FormItem = Form.Item
 type Props = {
   data: Object,
@@ -23,14 +23,11 @@ class ClassManage extends React.Component {
       dataSource2: [],
       dataSource3: []
     }
-    this.addStudent = this.addStudent.bind(this)
-    this.getStudent = this.getStudent.bind(this)
-    this.delStudent = this.delStudent.bind(this)
   }
   componentWillMount () {
     this.getStudent()
   }
-  delStudent (item: Object) {
+  delStudent = (item: Object) => {
     universalFetch(`${__API__}student/${item.systemId}`, {
       method: 'DELETE',
       headers: {
@@ -51,7 +48,7 @@ class ClassManage extends React.Component {
     })
     .catch(handleFetchError)
   }
-  getStudent () {
+  getStudent = () => {
     const { data } = this.props
     const delStudent = this.delStudent
     universalFetch(`${__API__}student/${data.classId}`)
@@ -125,7 +122,7 @@ class ClassManage extends React.Component {
       }
     })
   };
-  addStudent (values) {
+  addStudent = (values) => {
     const { data } = this.props
     console.log(data)
     const { num, name } = values
@@ -151,10 +148,6 @@ class ClassManage extends React.Component {
           }
         ), 'ClassManage.js')
       }
-      this.setState({
-        num: '',
-        name: ''
-      })
       this.getStudent()
     })
     .catch(handleFetchError)
