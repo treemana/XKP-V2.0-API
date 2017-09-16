@@ -521,7 +521,7 @@ class TableQuery extends React.Component {
         showTable
         ? <div className={styles['table']}>
           <Table columns={columns} pagination={false}
-            dataSource={this.state.dataSource} scroll={{ x: '120%', y: 350 }} />
+            dataSource={this.state.dataSource}/>
         </div>
         : ''
       }
