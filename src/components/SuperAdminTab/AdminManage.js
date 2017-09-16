@@ -242,7 +242,7 @@ class AdminManage extends React.Component {
       acatemy: value,
       specialty: '',
       classes: '',
-      grade: '',
+      grade: ''
     })
     universalFetch(`${__API__}specialty/${value}`)
     .then(res => res.json())
@@ -266,7 +266,7 @@ class AdminManage extends React.Component {
     this.setState({
       specialty: value,
       classes: '',
-      grade: '',
+      grade: ''
     })
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
@@ -370,7 +370,7 @@ class AdminManage extends React.Component {
             </Select>
           </Col>
           <Col span={5}>
-            <Select style={{ width: 150 }} key={specialty+acatemy} onChange={this.changeGrade}
+            <Select style={{ width: 150 }} key={specialty + acatemy} onChange={this.changeGrade}
               placeholder='请选择年级' disabled={!(specialty && acatemy)}>
               {
                 gradeList.map((item, index) => {
@@ -380,7 +380,7 @@ class AdminManage extends React.Component {
             </Select>
           </Col>
           <Col span={5}>
-            <Select style={{ width: 150 }} key={acatemy+specialty+grade} onChange={this.changeClass}
+            <Select style={{ width: 150 }} key={acatemy + specialty + grade} onChange={this.changeClass}
               placeholder='请选择班级' disabled={!(acatemy && specialty && grade)}>
               {
                 classList.map((item, index) => {
