@@ -415,8 +415,11 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  componentDidUpdate () {
-    if (this.state.showTable) { this.table = document.getElementsByClassName('ant-table-body')[3] }
+  componentWillUpdate () {
+    if (this.state.showTable) {
+      const len = document.getElementsByClassName('ant-table-body').length;
+      this.table = document.getElementsByClassName('ant-table-body')[len-1];
+    }
   }
   render () {
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList,
