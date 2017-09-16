@@ -84,7 +84,7 @@ class CourseManage extends React.Component {
             name: item.name,
             score: item.credit,
             type: item.type === true ? '考试' : '考察',
-            operate: <Popconfirm title='确定删除该专业么？' onConfirm={function () { delCourse(item) }}
+            operate: <Popconfirm title='确定删除该课程么？' onConfirm={function () { delCourse(item) }}
               okText='确认' cancelText='取消'>
               <span className={styles['operate']}>
                 <Icon type='delete' />删除</span>
@@ -108,9 +108,13 @@ class CourseManage extends React.Component {
       scoreError: true
     })
     if (!(name && score && type)) {
+      console.log(1)
       return
     }
-    if (!(nameError && scoreError && typeError)) {
+    if ((nameError && scoreError && typeError)) {
+      console.log(nameError + 'nameError')
+      console.log(scoreError + 'scoreError')
+      console.log(typeError + 'typeError')
       return
     }
     let exam = false

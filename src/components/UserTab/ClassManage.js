@@ -23,8 +23,6 @@ class ClassManage extends React.Component {
       dataSource2: [],
       dataSource3: []
     }
-    this.changeNum = this.changeNum.bind(this)
-    this.changeNname = this.changeNname.bind(this)
     this.addStudent = this.addStudent.bind(this)
     this.getStudent = this.getStudent.bind(this)
     this.delStudent = this.delStudent.bind(this)
@@ -129,6 +127,7 @@ class ClassManage extends React.Component {
   };
   addStudent (values) {
     const { data } = this.props
+    console.log(data)
     const { num, name } = values
     const postData = {
       classId: data.classId,

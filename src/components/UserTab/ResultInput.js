@@ -25,7 +25,7 @@ class ResultInput extends React.Component {
     this.state = {
       columns: [{
         title: '学号',
-        width: 70,
+        width: 100,
         dataIndex: 'num',
         key: 'num',
         fixed: 'left'
@@ -189,7 +189,7 @@ class ResultInput extends React.Component {
           courseData: json.data,
           columns: columns.concat(columns1).concat([{
             title: '操作',
-            width: 50,
+            width: 70,
             dataIndex: 'operate',
             key: 'operate',
             fixed: 'right'
@@ -202,7 +202,7 @@ class ResultInput extends React.Component {
     const { getFieldDecorator } = this.props.form
     const { columns, dataSource, modalData, courseData } = this.state
     return <div className={styles['result-main']}>
-      <Table columns={columns} pagination={false} dataSource={dataSource} scroll={{ x: '150%' }} />
+      <Table columns={columns} pagination={false} dataSource={dataSource} scroll={{ x: '150%', y: 420 }} />
       <Modal
         title='修改成绩'
         visible={this.state.visible}

@@ -40,10 +40,14 @@ class TableQuery extends React.Component {
       columns: [{
         title: '学号',
         dataIndex: 'num',
+        width: 100,
+        fixed: 'left',
         key: 'num'
       }, {
         title: '姓名',
         dataIndex: 'name',
+        width: 100,
+        fixed: 'left',
         key: 'name'
       }],
       buttonClick: false
@@ -82,8 +86,7 @@ class TableQuery extends React.Component {
       const columns1 = json.data.map((item, index) => {
         return {
           title: item.name,
-          width: 70,
-          fixed: 'left',
+          width: 40,
           dataIndex: item.systemId,
           key: item.systemId,
           type: item.type
@@ -94,46 +97,57 @@ class TableQuery extends React.Component {
         columns: columns.concat(columns1).concat([{
           title: '学术科研与素质教育',
           dataIndex: 'academic',
+          width: 40,
           key: 'academic'
         }, {
           title: '平均绩点',
           dataIndex: 'point',
+          width: 40,
           key: 'point'
         }, {
           title: '操行评定',
           dataIndex: 'behavior',
+          width: 40,
           key: 'behavior'
         }, {
           title: '德育',
           dataIndex: 'moral',
+          width: 40,
           key: 'moral'
         }, {
           title: '文体',
           dataIndex: 'activity',
+          width: 40,
           key: 'activity'
         }, {
           title: '其他',
           dataIndex: 'other',
+          width: 40,
           key: 'other'
         }, {
           title: '职务',
-          dataIndex: 'duty',
-          key: 'duty'
+          dataIndex: 'dutyDesc',
+          width: 200,
+          key: 'dutyDesc'
         }, {
           title: '智育',
           dataIndex: 'score',
+          width: 80,
           key: 'score'
         }, {
           title: '总分',
           dataIndex: 'total',
+          width: 80,
           key: 'total'
         }, {
           title: '综合排名',
           dataIndex: 'complexRank',
+          width: 50,
           key: 'complexRank'
         }, {
           title: '智育排名',
           dataIndex: 'scoreRank',
+          width: 40,
           key: 'scoreRank'
         }])
       })
@@ -299,7 +313,7 @@ class TableQuery extends React.Component {
           activity: item.activity,
           behavior: item.behavior,
           complexRank: item.complexRank,
-          duty: item.duty,
+          dutyDesc: item.dutyDesc,
           moral: item.moral,
           other: item.other,
           point: item.point,
@@ -325,7 +339,10 @@ class TableQuery extends React.Component {
   }
   changeAcatemy (value: string) {
     this.setState({
-      acatemy: value
+      acatemy: value,
+      specialty: '',
+      grade: '',
+      classes: ''
     })
     universalFetch(`${__API__}specialty/${value}`)
     .then(res => res.json())
@@ -347,7 +364,9 @@ class TableQuery extends React.Component {
   }
   changeSpecialty (value: string) {
     this.setState({
-      specialty: value
+      specialty: value,
+      grade: '',
+      classes: ''
     })
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
@@ -375,7 +394,8 @@ class TableQuery extends React.Component {
   changeGrade (value: string) {
     const { specialty } = this.state
     this.setState({
-      grade: value
+      grade: value,
+      classes: ''
     })
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${value}`)
     .then(res => res.json())
@@ -424,7 +444,7 @@ class TableQuery extends React.Component {
           <Col span={5}>
             {
               specialty
-              ? <Select style={{ width: 150 }} onChange={this.changeSpecialty}
+              ? <Select style={{ width: 150 }} key={acatemy} onChange={this.changeSpecialty}
                 placeholder='请选择专业' disabled={!acatemy} value={specialty}>
                 {
                   specialtyList.map((item, index) => {
@@ -445,7 +465,7 @@ class TableQuery extends React.Component {
           <Col span={5}>
             {
               grade
-              ? <Select style={{ width: 150 }} onChange={this.changeGrade} value={grade}
+              ? <Select style={{ width: 150 }} key={acatemy + specialty} onChange={this.changeGrade} value={grade}
                 placeholder='请选择年级' disabled={!(specialty && acatemy)}>
                 {
                   gradeList.map((item, index) => {
@@ -466,7 +486,8 @@ class TableQuery extends React.Component {
           <Col span={5}>
             {
               classes
-              ? <Select style={{ width: 150 }} onChange={this.changeClass} value={classes}
+              ? <Select style={{ width: 150 }} key={acatemy + specialty + classes}
+                onChange={this.changeClass} value={classes}
                 placeholder='请选择班级' disabled={!(acatemy && specialty && grade)}>
                 {
                   classList.map((item, index) => {
@@ -499,7 +520,8 @@ class TableQuery extends React.Component {
       {
         showTable
         ? <div className={styles['table']}>
-          <Table columns={columns} pagination={false} dataSource={this.state.dataSource} />
+          <Table columns={columns} pagination={false}
+            dataSource={this.state.dataSource} scroll={{ x: '120%', y: 350 }} />
         </div>
         : ''
       }
