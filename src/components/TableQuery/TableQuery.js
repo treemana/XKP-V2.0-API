@@ -417,15 +417,14 @@ class TableQuery extends React.Component {
   }
   componentWillUpdate () {
     if (this.state.showTable) {
-      const len = document.getElementsByClassName('ant-table-body').length;
-      this.table = document.getElementsByClassName('ant-table-body')[len-1];
+      const len = document.getElementsByClassName('ant-table-body').length
+      this.table = document.getElementsByClassName('ant-table-body')[len - 1]
     }
   }
   render () {
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList,
       gradeList, showTable, classes, columns } = this.state
     return <div className={styles['main']}>
-      <SlideButton ele={this.table} />
       <div className={styles['class-select']}>
         <Row>
           <Col span={5}>
@@ -527,7 +526,7 @@ class TableQuery extends React.Component {
       {
         showTable
         ? <div className={styles['table']}>
-          <Table columns={columns} pagination={false} scroll={{ x: '120%' }}
+          <Table columns={columns} pagination={false}
             dataSource={this.state.dataSource} />
         </div>
         : null

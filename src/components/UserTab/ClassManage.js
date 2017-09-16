@@ -197,7 +197,7 @@ class ClassManage extends React.Component {
             <Col span={8}>
               <FormItem>
                 {getFieldDecorator('num', {
-                  rules: [{ required: true, len:10, message: '请输入十位学号!' }]
+                  rules: [{ required: true, min: 8, max:10, message: '请输入正确学号!' }]
                 })(
                   <Input prefix={<Icon type='user' style={{ fontSize: 13 }} />}
                     style={{ width: '200px' }} placeholder='学号' />

@@ -44,3 +44,8 @@
   width: 100px;
   text-align: right;
 }
+.name-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

@@ -205,8 +205,7 @@ class ResultInput extends React.Component {
     const { getFieldDecorator } = this.props.form
     const { columns, dataSource, modalData, courseData } = this.state
     return <div className={styles['result-main']}>
-      <SlideButton ele={this.table} />
-      <Table columns={columns} pagination={false} dataSource={dataSource} scroll={{ x: '130%' }} />
+      <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
         title='修改成绩'
         visible={this.state.visible}

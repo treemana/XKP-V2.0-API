@@ -1,8 +1,9 @@
 // @flow
 import React from 'react'
 import styles from './Basic.css'
-import { Table, Icon, Input, Select, Modal, Row, Col, message } from 'antd'
+import { Table, Icon, Form, Input, Button, Select, Modal, Row, Col, message } from 'antd'
 const Option = Select.Option
+const FormItem = Form.Item
 import universalFetch, { handleFetchError } from 'utils/fetch'
 
 type Props = {
@@ -83,8 +84,9 @@ class Basic extends React.Component {
       visible: false
     })
   }
-  handleOk () {
-    const { cxpd, dy, wt, xsky, post, xskybz, postbz, modalData } = this.state
+  handleOk (values) {
+    const { modalData } = this.state
+    const { cxpd, dy, wt, xsky, post, xskybz, postbz } = values
     const data = {
       systemId: modalData.systemId,
       moral: dy,
@@ -145,6 +147,14 @@ class Basic extends React.Component {
       xskybz: item.academicDesc,
       post: item.duty,
       postbz: item.dutyDesc
+    })
+  }
+  submitHandle = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values)
+        this.handleOk(values)
+      }
     })
   }
   getData () {
@@ -216,92 +226,136 @@ class Basic extends React.Component {
       key: 'operate'
     }]
     const { dataSource, cxpd, dy, wt, xsky, post, xskybz, postbz, modalData } = this.state
+    const { getFieldDecorator } = this.props.form
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
         title='修改基本加分'
         visible={this.state.visible}
-        onOk={this.handleOk}
+        onOk={this.submitHandle}
         onCancel={this.handleCancel}
         maskClosable={false}
         width={600}
         >
-        <div className={styles['modal-main']}>
-          <Row>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>姓名：</span>
-                {modalData.name}
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>学号：</span>
-                {modalData.studentNumber}
-              </div>
-            </Col>
-          </Row>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 15 }}>
           <div className={styles['row']}>
-            <span className={styles['title']}>操行评定：</span>
-            <Select style={{ width: '150px' }} placeholder='新选择操行评定'
-              onChange={this.changeCxpd} value={cxpd}>
-              <Option value='优'>优</Option>
-              <Option value='良'>良</Option>
-              <Option value='中'>中</Option>
-              <Option value='差'>差</Option>
-            </Select>
+            <span className={styles['title']}>姓名：</span>
+            {modalData.name}
           </div>
-          <Row>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>德育：</span>
-                <Input style={{ width: '150px' }} placeholder='请输入德育分'
-                  onChange={this.changeInput} value={dy} name='dy' />
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>文体：</span>
-                <Input style={{ width: '150px' }} placeholder='请输入文体分'
-                  onChange={this.changeInput} value={wt} name='wt' />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>学术科研：</span>
-                <Input style={{ width: '150px' }} placeholder='请输入学术科研分'
-                  onChange={this.changeInput} value={xsky} name='xsky' />
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>学术科研备注：</span>
-                <Input style={{ width: '150px' }} placeholder='请输入学术科研备注'
-                  onChange={this.changeInput} value={xskybz} name='xskybz' />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>职务：</span>
-                <Input style={{ width: '150px' }} placeholder='请输入职务分'
-                  onChange={this.changeInput} value={post} name='post' />
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles['row']}>
-                <span className={styles['title']}>职务分备注：</span>
-                <Input style={{ width: '150px' }} placeholder='请输入职务分备注'
-                  onChange={this.changeInput} value={postbz} name='postbz' />
-              </div>
-            </Col>
-          </Row>
+          <div className={styles['row']}>
+            <span className={styles['title']}>学号：</span>
+            {modalData.studentNumber}
+          </div>
+        </div>
+        <div className={styles['modal-main']}>
+          <Form>
+            <FormItem
+              labelCol={{ xs: { span: 5 } }}
+              label={'操行评定：'}>
+              {getFieldDecorator('cxpd', {
+                rules: [{ required: true, message: '请输入操行评定!' }],
+                initialValue: modalData.behavior
+              })(
+                <Select style={{ width: '150px' }} placeholder='新选择操行评定'>
+                  <Option value='优'>优</Option>
+                  <Option value='良'>良</Option>
+                  <Option value='中'>中</Option>
+                  <Option value='差'>差</Option>
+                </Select>
+              )}
+            </FormItem>
+            <Row>
+              <Col span={12}>
+                <div className={styles['row']}>
+                  <FormItem
+                    {...formItemLayout}
+                    label={'德育：'}>
+                    {getFieldDecorator('dy', {
+                      rules: [{ required: true, message: '请输入德育分!' }],
+                      initialValue: modalData.moral
+                    })(
+                      <Input style={{ width: '150px' }} placeholder='请输入德育分' />
+                    )}
+                  </FormItem>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <div className={styles['row']}>
+                  <FormItem
+                    {...formItemLayout}
+                    label={'学术科研：'}>
+                    {getFieldDecorator('xsky', {
+                      rules: [{ required: true, message: '请输入学术科研分!' }],
+                      initialValue: modalData.academic
+                    })(
+                      <Input style={{ width: '150px' }} placeholder='请输入学术科研分' />
+                    )}
+                  </FormItem>
+                </div>
+              </Col>
+              <Col span={12}>
+                <div className={styles['row']}>
+                  <FormItem
+                    {...formItemLayout}
+                    label={'学术科研备注：'}>
+                    {getFieldDecorator('xskybz', {
+                      rules: [{ required: false, max: 50, message: '请确认学术科研备注!' }],
+                      initialValue: modalData.academicDesc
+                    })(
+                      <Input style={{ width: '150px' }} placeholder='请输入学术科研备注' />
+                    )}
+                  </FormItem>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <div className={styles['row']}>
+                  <FormItem
+                    {...formItemLayout}
+                    label={'职务：'}>
+                    {getFieldDecorator('post', {
+                      rules: [{ required: true, message: '请输入职务分!' }],
+                      initialValue: modalData.duty
+                    })(
+                      <Input style={{ width: '150px' }} placeholder='请输入职务分' />
+                    )}
+                  </FormItem>
+                </div>
+              </Col>
+              <Col span={12}>
+                <div className={styles['row']}>
+                  <FormItem
+                    {...formItemLayout}
+                    label={'职务分备注：'}>
+                    {getFieldDecorator('postbz', {
+                      rules: [{ required: false, max: 20, message: '请确认职务分备注!' }],
+                      initialValue: modalData.dutyDesc
+                    })(
+                      <Input style={{ width: '150px' }} placeholder='请输入职务分备注' />
+                    )}
+                  </FormItem>
+                </div>
+              </Col>
+            </Row>
+          </Form>
         </div>
       </Modal>
     </div>
   }
 }
-export default Basic
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 10 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 10 }
+  }
+}
+const newBasic = Form.create()(Basic)
+export default newBasic
