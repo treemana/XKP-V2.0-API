@@ -4,6 +4,10 @@
   justify-content: center;
   align-items: center;
   .main-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
     border: 1px dotted #999;
     padding: 20px;
     width: 300px;

@@ -2,10 +2,10 @@
 import React from 'react'
 import styles from './ResultInput.css'
 import universalFetch, { handleFetchError } from 'utils/fetch'
+import SlideButton from '../SlideButton'
 import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
-
 type States = {
   columns: Array<Object>,
   dataSource: Array<Object>,
@@ -115,6 +115,9 @@ class ResultInput extends React.Component {
     this.getCourse()
     this.getScore()
   }
+  componentDidMount () {
+    this.table = document.getElementsByClassName('ant-table-body')[3]
+  }
   updateScore (item: Object) {
     console.log(this.state.courseData)
     console.log(item)
@@ -202,7 +205,8 @@ class ResultInput extends React.Component {
     const { getFieldDecorator } = this.props.form
     const { columns, dataSource, modalData, courseData } = this.state
     return <div className={styles['result-main']}>
-      <Table columns={columns} pagination={false} dataSource={dataSource} />
+      <SlideButton ele={this.table} />
+      <Table columns={columns} pagination={false} dataSource={dataSource} scroll={{ x: '130%' }} />
       <Modal
         title='修改成绩'
         visible={this.state.visible}

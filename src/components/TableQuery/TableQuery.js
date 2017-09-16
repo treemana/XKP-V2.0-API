@@ -4,7 +4,7 @@ import styles from './TableQuery.css'
 import { Table, Select, Row, Col, Button } from 'antd'
 import universalFetch, { handleFetchError } from 'utils/fetch'
 const Option = Select.Option
-
+import SlideButton from '../SlideButton'
 type Props = {
   data: Object
 }
@@ -415,10 +415,14 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
+  componentDidUpdate () {
+    if (this.state.showTable) { this.table = document.getElementsByClassName('ant-table-body')[3] }
+  }
   render () {
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList,
       gradeList, showTable, classes, columns } = this.state
     return <div className={styles['main']}>
+      <SlideButton ele={this.table} />
       <div className={styles['class-select']}>
         <Row>
           <Col span={5}>
@@ -520,10 +524,10 @@ class TableQuery extends React.Component {
       {
         showTable
         ? <div className={styles['table']}>
-          <Table columns={columns} pagination={false}
-            dataSource={this.state.dataSource}/>
+          <Table columns={columns} pagination={false} scroll={{ x: '120%' }}
+            dataSource={this.state.dataSource} />
         </div>
-        : ''
+        : null
       }
     </div>
   }
