@@ -242,7 +242,7 @@ class ResultInput extends React.Component {
                     key={index}
                   >
                     {getFieldDecorator(item.systemId.toString(), {
-                      initialValue: modalData['marks'][index]['examination']
+                      initialValue: modalData['marks'][index] ? modalData['marks'][index]['examination'] : ''
                     })(
                       <Input />
                     )}
@@ -255,7 +255,7 @@ class ResultInput extends React.Component {
                     key={index}
                   >
                     {getFieldDecorator(item.systemId.toString(), {
-                      initialValue: modalData['marks'][index]['inspection']
+                      initialValue: modalData['marks'][index] ? modalData['marks'][index]['inspection'] : ''
                     })(
                       <Select>
                         <Option value={null}>未选</Option>
