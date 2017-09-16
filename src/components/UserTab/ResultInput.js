@@ -254,6 +254,7 @@ class ResultInput extends React.Component {
                       initialValue: modalData['marks'][index]['inspection']
                     })(
                       <Select>
+                        <Option value={null}>未选</Option>
                         <Option value='优秀'>优秀</Option>
                         <Option value='良好'>良好</Option>
                         <Option value='中等'>中等</Option>
