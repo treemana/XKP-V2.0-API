@@ -2,7 +2,6 @@
 import React from 'react'
 import styles from './ResultInput.css'
 import universalFetch, { handleFetchError } from 'utils/fetch'
-import SlideButton from '../SlideButton'
 import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option

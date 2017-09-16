@@ -1,23 +1,17 @@
 // @flow
 import React from 'react'
 import styles from './Basic.css'
-import { Table, Icon, Form, Input, Button, Select, Modal, Row, Col, message } from 'antd'
+import { Table, Icon, Form, Input, Select, Modal, Row, Col, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 import universalFetch, { handleFetchError } from 'utils/fetch'
 
 type Props = {
-  data: Object
+  data: Object,
+  form: Object
 }
 type States = {
   dataSource: Array<Object>,
-  cxpd: string,
-  dy: string,
-  wt: string,
-  xsky: string,
-  post: string,
-  xskybz: string,
-  postbz: string,
   visible: boolean,
   modalData: Object
 }
@@ -28,20 +22,11 @@ class Basic extends React.Component {
     super(props)
     this.state = {
       dataSource: [],
-      cxpd: '',
-      dy: '',
-      wt: '',
-      xsky: '',
-      post: '',
       modalData: {},
-      visible: false,
-      xskybz: '',
-      postbz: ''
+      visible: false
     }
     this.getData = this.getData.bind(this)
     this.updateScore = this.updateScore.bind(this)
-    this.changeInput = this.changeInput.bind(this)
-    this.changeCxpd = this.changeCxpd.bind(this)
     this.handleOk = this.handleOk.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
   }
@@ -122,16 +107,6 @@ class Basic extends React.Component {
       message.success('修改成功')
     })
     .catch(handleFetchError)
-  }
-  changeInput (e: Object) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
-  changeCxpd (value: string) {
-    this.setState({
-      cxpd: value
-    })
   }
   componentWillMount () {
     this.getTableData()
@@ -225,7 +200,7 @@ class Basic extends React.Component {
       dataIndex: 'operate',
       key: 'operate'
     }]
-    const { dataSource, cxpd, dy, wt, xsky, post, xskybz, postbz, modalData } = this.state
+    const { dataSource, modalData } = this.state
     const { getFieldDecorator } = this.props.form
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
@@ -237,7 +212,12 @@ class Basic extends React.Component {
         maskClosable={false}
         width={600}
         >
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 15 }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 15 }}>
           <div className={styles['row']}>
             <span className={styles['title']}>姓名：</span>
             {modalData.name}
@@ -253,7 +233,7 @@ class Basic extends React.Component {
               labelCol={{ xs: { span: 5 } }}
               label={'操行评定：'}>
               {getFieldDecorator('cxpd', {
-                rules: [{ required: true, message: '请输入操行评定!' }],
+                rules: [{ required: true, whitespace: true, message: '请输入操行评定!' }],
                 initialValue: modalData.behavior
               })(
                 <Select style={{ width: '150px' }} placeholder='新选择操行评定'>
@@ -271,7 +251,7 @@ class Basic extends React.Component {
                     {...formItemLayout}
                     label={'德育：'}>
                     {getFieldDecorator('dy', {
-                      rules: [{ required: true, message: '请输入德育分!' }],
+                      rules: [{ required: true, whitespace: true, message: '请输入德育分!' }],
                       initialValue: modalData.moral
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入德育分' />
@@ -287,7 +267,7 @@ class Basic extends React.Component {
                     {...formItemLayout}
                     label={'学术科研：'}>
                     {getFieldDecorator('xsky', {
-                      rules: [{ required: true, message: '请输入学术科研分!' }],
+                      rules: [{ required: true, whitespace: true, message: '请输入学术科研分!' }],
                       initialValue: modalData.academic
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入学术科研分' />
@@ -317,7 +297,7 @@ class Basic extends React.Component {
                     {...formItemLayout}
                     label={'职务：'}>
                     {getFieldDecorator('post', {
-                      rules: [{ required: true, message: '请输入职务分!' }],
+                      rules: [{ required: true, whitespace: true, message: '请输入职务分!' }],
                       initialValue: modalData.duty
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入职务分' />

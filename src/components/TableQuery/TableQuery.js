@@ -1,10 +1,9 @@
 // @flow
 import React from 'react'
 import styles from './TableQuery.css'
-import { Table, Select, Row, Col, Button } from 'antd'
+import { Table, Select, Icon, Row, Col, Button } from 'antd'
 import universalFetch, { handleFetchError } from 'utils/fetch'
 const Option = Select.Option
-import SlideButton from '../SlideButton'
 type Props = {
   data: Object
 }
@@ -513,11 +512,13 @@ class TableQuery extends React.Component {
           </Col>
           <Col span={2}>
             <Button type='primary' onClick={this.queryData} disabled={!(acatemy && specialty && grade && classes)}>
+              <Icon type='search' />
               确定
             </Button>
           </Col>
           <Col span={2}>
             <Button type='primary' onClick={this.downLoad} disabled={!(acatemy && specialty && grade && classes)}>
+              <Icon type='cloud-download' />
               下载
             </Button>
           </Col>

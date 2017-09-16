@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './ModifyPwd.css'
 import universalFetch, { handleFetchError } from 'utils/fetch'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Icon, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 
 type Props = {
@@ -136,6 +136,7 @@ class ModifyPwd extends React.Component {
         </FormItem>
         <FormItem>
           <Button type='primary' htmlType='submit' className={styles['login-form-button']}>
+            <Icon type='edit' />
             修改
           </Button>
         </FormItem>

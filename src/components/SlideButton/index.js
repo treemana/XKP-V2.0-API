@@ -6,10 +6,10 @@ export default function ({ ele }:{ele: Object}) {
     <div style={{ position: 'fixed', top: 10, right: 20, zIndex: 999 }}>
       <Tag closable>单击按钮左右滚动</Tag>
       <Button.Group>
-        <Button type='primary' onClick={slideHandle.bind(null, ele, true)}>
+        <Button type='primary' onClick={() => { slideHandle(ele, true) }}>
           <Icon type='left' />
         </Button>
-        <Button type='primary' onClick={slideHandle.bind(null, ele, false)}>
+        <Button type='primary' onClick={() => { slideHandle(ele, false) }}>
           <Icon type='right' />
         </Button>
       </Button.Group>
