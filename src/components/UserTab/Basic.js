@@ -78,6 +78,7 @@ class Basic extends React.Component {
       duty: post,
       dutyDesc: postbz
     }
+    console.log('data',data);
     universalFetch(`${__API__}base-score`, {
       method: 'PUT',
       headers: {
@@ -190,7 +191,7 @@ class Basic extends React.Component {
       key: 'operate'
     }]
     const { dataSource, modalData } = this.state
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldValue } = this.props.form
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
@@ -222,7 +223,7 @@ class Basic extends React.Component {
               labelCol={{ xs: { span: 5 } }}
               label={'操行评定：'}>
               {getFieldDecorator('cxpd', {
-                rules: [{ required: true, whitespace: true, message: '请输入操行评定!' }],
+                rules: [{ required: true, message: '请输入操行评定!' }],
                 initialValue: modalData.behavior
               })(
                 <Select style={{ width: '150px' }} placeholder='新选择操行评定'>
@@ -240,7 +241,7 @@ class Basic extends React.Component {
                     {...formItemLayout}
                     label={'德育：'}>
                     {getFieldDecorator('dy', {
-                      rules: [{ required: true, whitespace: true, message: '请输入德育分!' }],
+                      rules: [{ required: true, message: '请输入德育分!' }],
                       initialValue: modalData.moral
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入德育分' />
@@ -256,7 +257,7 @@ class Basic extends React.Component {
                     {...formItemLayout}
                     label={'学术科研：'}>
                     {getFieldDecorator('xsky', {
-                      rules: [{ required: true, whitespace: true, message: '请输入学术科研分!' }],
+                      rules: [{ required: true, message: '请输入学术科研分!' }],
                       initialValue: modalData.academic
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入学术科研分' />
@@ -267,13 +268,15 @@ class Basic extends React.Component {
               <Col span={12}>
                 <div className={styles['row']}>
                   <FormItem
+                    key={'xskybz'+!(getFieldValue('xsky') === '' || getFieldValue('xsky') == '0').toString()}
                     {...formItemLayout}
                     label={'学术科研备注：'}>
                     {getFieldDecorator('xskybz', {
-                      rules: [{ required: false, max: 50, message: '请确认学术科研备注!' }],
-                      initialValue: modalData.academicDesc
+                      rules: [{ required: !(getFieldValue('xsky') === '' || getFieldValue('xsky') == '0'), max: 50, message: '请确认学术科研备注!' }],
+                      initialValue: (getFieldValue('xsky') === '' || getFieldValue('xsky') == '0') ? '':modalData.academicDesc
                     })(
-                      <Input style={{ width: '150px' }} placeholder='请输入学术科研备注' />
+                      <Input style={{ width: '150px' }}
+                             disabled={getFieldValue('xsky') === '' || getFieldValue('xsky') == '0'} placeholder='请输入学术科研备注' />
                     )}
                   </FormItem>
                 </div>
@@ -286,7 +289,7 @@ class Basic extends React.Component {
                     {...formItemLayout}
                     label={'职务：'}>
                     {getFieldDecorator('post', {
-                      rules: [{ required: true, whitespace: true, message: '请输入职务分!' }],
+                      rules: [{ required: true, message: '请输入职务分!' }],
                       initialValue: modalData.duty
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入职务分' />
@@ -297,13 +300,15 @@ class Basic extends React.Component {
               <Col span={12}>
                 <div className={styles['row']}>
                   <FormItem
+                    key={'postbz'+!(getFieldValue('post') === '' || getFieldValue('post') == '0').toString()}
                     {...formItemLayout}
                     label={'职务分备注：'}>
                     {getFieldDecorator('postbz', {
-                      rules: [{ required: false, max: 20, message: '请确认职务分备注!' }],
-                      initialValue: modalData.dutyDesc
+                      rules: [{ required: !(getFieldValue('post') === '' || getFieldValue('post') == '0'), max: 20, message: '请确认职务分备注!' }],
+                      initialValue: (getFieldValue('post') === '' || getFieldValue('post') == '0')?'':modalData.dutyDesc
                     })(
-                      <Input style={{ width: '150px' }} placeholder='请输入职务分备注' />
+                      <Input style={{ width: '150px' }}
+                             disabled={getFieldValue('post') === '' || getFieldValue('post') == '0'} placeholder='请输入职务分备注' />
                     )}
                   </FormItem>
                 </div>
