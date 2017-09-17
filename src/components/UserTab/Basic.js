@@ -191,9 +191,7 @@ class Basic extends React.Component {
       key: 'operate'
     }]
     const { dataSource, modalData } = this.state
-    const { getFieldDecorator, getFieldValue } = this.props.form
-    const flag1 = !(getFieldValue('xsky') === '' || getFieldValue('xsky') === '0')
-    const flag2 = !(getFieldValue('post') === '' || getFieldValue('post') === '0')
+    const { getFieldDecorator } = this.props.form
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
@@ -286,19 +284,16 @@ class Basic extends React.Component {
               <Col span={12}>
                 <div className={styles['row']}>
                   <FormItem
-                    key={'xskybz' + flag1.toString()}
                     {...formItemLayout}
                     label={'学术科研备注：'}>
                     {getFieldDecorator('xskybz', {
                       rules: [{
-                        required: flag1,
+                        required: false,
                         max: 50,
-                        message: '请确认学术科研备注!' }],
-                      initialValue: !flag1
-                        ? '' : modalData.academicDesc
+                        message: '输入50字以下学术科研备注!' }],
+                      initialValue: modalData.academicDesc
                     })(
                       <Input style={{ width: '150px' }}
-                        disabled={!flag1}
                         placeholder='请输入学术科研备注' />
                     )}
                   </FormItem>
@@ -323,18 +318,16 @@ class Basic extends React.Component {
               <Col span={12}>
                 <div className={styles['row']}>
                   <FormItem
-                    key={'postbz' + flag2.toString()}
                     {...formItemLayout}
                     label={'职务分备注：'}>
                     {getFieldDecorator('postbz', {
                       rules: [{
-                        required: flag2,
-                        max: 20,
-                        message: '请确认职务分备注!' }],
-                      initialValue: !flag2 ? '' : modalData.dutyDesc
+                        required: false,
+                        max: 40,
+                        message: '40字以下职务分备注!' }],
+                      initialValue: modalData.dutyDesc
                     })(
                       <Input style={{ width: '150px' }}
-                        disabled={!flag2}
                         placeholder='请输入职务分备注' />
                     )}
                   </FormItem>
@@ -354,8 +347,8 @@ const formItemLayout = {
     sm: { span: 10 }
   },
   wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 10 }
+    xs: { span: 30 },
+    sm: { span: 13 }
   }
 }
 const newBasic = Form.create()(Basic)

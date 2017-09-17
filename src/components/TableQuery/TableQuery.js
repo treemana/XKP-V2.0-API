@@ -21,6 +21,17 @@ type States = {
   columns: Array<Object>,
   buttonClick: boolean
 }
+const initColumns = [{
+  title: '学号',
+  dataIndex: 'num',
+  width: 100,
+  key: 'num'
+}, {
+  title: '姓名',
+  dataIndex: 'name',
+  width: 100,
+  key: 'name'
+}]
 class TableQuery extends React.Component {
   props: Props
   state: States
@@ -37,22 +48,12 @@ class TableQuery extends React.Component {
       gradeList: [],
       dataSource: [],
       showTable: false,
-      columns: [{
-        title: '学号',
-        dataIndex: 'num',
-        width: 100,
-        key: 'num'
-      }, {
-        title: '姓名',
-        dataIndex: 'name',
-        width: 100,
-        key: 'name'
-      }],
+      columns: [],
       buttonClick: false
     }
   }
   getCourse = () => {
-    const { columns, classes, buttonClick } = this.state
+    const { classes, buttonClick } = this.state
     if (buttonClick) {
       return
     }
@@ -73,16 +74,17 @@ class TableQuery extends React.Component {
       }
       const columns1 = json.data.map((item, index) => {
         return {
-          title: item.name,
+          title: <span>{item.name}<br />({item.credit}分)</span>,
           width: 40,
-          dataIndex: item.systemId + item.name,
-          key: item.systemId + item.name,
+          dataIndex: item.systemId,
+          key: item.systemId,
           type: item.type
         }
       })
       this.setState({
         showTable: true,
-        columns: columns.concat(columns1).concat([{
+        buttonClick: false,
+        columns: [ ...initColumns, ...columns1, {
           title: '学术科研与素质教育',
           dataIndex: 'academic',
           width: 40,
@@ -137,7 +139,7 @@ class TableQuery extends React.Component {
           dataIndex: 'scoreRank',
           width: 40,
           key: 'scoreRank'
-        }])
+        }]
       })
     })
     .catch(handleFetchError)
@@ -312,7 +314,7 @@ class TableQuery extends React.Component {
         const more = {}
         item.marks.map((mark, i) => {
           const m = {
-            [mark.courseId + mark.name]: mark.type === true ? mark.examination : mark.inspection
+            [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
           }
           Object.assign(more, m)
         })
