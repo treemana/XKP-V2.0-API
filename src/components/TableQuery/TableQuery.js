@@ -75,8 +75,8 @@ class TableQuery extends React.Component {
         return {
           title: item.name,
           width: 40,
-          dataIndex: item.systemId,
-          key: item.systemId,
+          dataIndex: item.systemId + item.name,
+          key: item.systemId + item.name,
           type: item.type
         }
       })
@@ -294,7 +294,7 @@ class TableQuery extends React.Component {
       }
       json.data.map((item, index) => {
         const base = {
-          key: index,
+          key: item.studentNumber,
           num: item.studentNumber,
           name: item.name,
           academic: item.academic,
@@ -312,7 +312,7 @@ class TableQuery extends React.Component {
         const more = {}
         item.marks.map((mark, i) => {
           const m = {
-            [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
+            [mark.courseId + mark.name]: mark.type === true ? mark.examination : mark.inspection
           }
           Object.assign(more, m)
         })
