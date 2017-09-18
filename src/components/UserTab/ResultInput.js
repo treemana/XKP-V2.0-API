@@ -26,14 +26,12 @@ class ResultInput extends React.Component {
         title: '学号',
         width: 100,
         dataIndex: 'num',
-        key: 'num',
-        fixed: 'left'
+        key: 'num'
       }, {
         title: '姓名',
         width: 70,
         dataIndex: 'name',
-        key: 'name',
-        fixed: 'left'
+        key: 'name'
       }],
       dataSource: [],
       visible: false,
@@ -184,8 +182,7 @@ class ResultInput extends React.Component {
             title: '操作',
             width: 70,
             dataIndex: 'operate',
-            key: 'operate',
-            fixed: 'right'
+            key: 'operate'
           }])
         })
       })
