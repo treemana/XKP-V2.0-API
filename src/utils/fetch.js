@@ -1,4 +1,3 @@
-// @flow
 /**
  * 在这里处理response status code
  */

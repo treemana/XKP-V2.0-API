@@ -222,8 +222,7 @@ class Basic extends React.Component {
         <div className={styles['modal-main']}>
           <Form>
             <FormItem
-              labelCol={{ xs: { span: 5 } }}
-              wrapperCol={{ xs: { span: 30 } }}
+              {...formItemLayout}
               label={'操行评定：'}>
               {getFieldDecorator('cxpd', {
                 rules: [{ required: true, message: '请输入操行评定!' }],

@@ -193,12 +193,13 @@ class ResultInput extends React.Component {
   }
   render () {
     const { getFieldDecorator } = this.props.form
-    const { columns, dataSource, modalData, courseData } = this.state
+    const { columns, dataSource, modalData, courseData, visible } = this.state
     return <div className={styles['result-main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
         title='修改成绩'
-        visible={this.state.visible}
+        key={visible.toString() + modalData.studentNumber}
+        visible={visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         width={400}
