@@ -109,9 +109,10 @@ class Basic extends React.Component {
     this.getTableData()
   }
   updateScore = (item: Object) => {
+    console.log('updateScore', item)
     this.setState({
       visible: true,
-      modalData: item
+      modalData: { ...item }
     })
   }
   submitHandle = () => {
@@ -128,7 +129,6 @@ class Basic extends React.Component {
     universalFetch(`${__API__}base-score/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -190,18 +190,20 @@ class Basic extends React.Component {
       dataIndex: 'operate',
       key: 'operate'
     }]
-    const { dataSource, modalData } = this.state
+    const { dataSource, modalData, visible } = this.state
     const { getFieldDecorator } = this.props.form
+    console.log('render', modalData)
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
         title='修改基本加分'
-        visible={this.state.visible}
+        key={visible.toString() + modalData.studentNumber}
+        visible={visible}
         onOk={this.submitHandle}
         onCancel={this.handleCancel}
         maskClosable={false}
         width={600}
-      >
+          >
         <div style={{
           display: 'flex',
           flexDirection: 'row',
@@ -221,6 +223,7 @@ class Basic extends React.Component {
           <Form>
             <FormItem
               labelCol={{ xs: { span: 5 } }}
+              wrapperCol={{ xs: { span: 30 } }}
               label={'操行评定：'}>
               {getFieldDecorator('cxpd', {
                 rules: [{ required: true, message: '请输入操行评定!' }],
@@ -232,7 +235,7 @@ class Basic extends React.Component {
                   <Option value='中'>中</Option>
                   <Option value='差'>差</Option>
                 </Select>
-              )}
+                  )}
             </FormItem>
             <Row>
               <Col span={12}>
@@ -245,7 +248,7 @@ class Basic extends React.Component {
                       initialValue: modalData.activity
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入文体分' />
-                    )}
+                        )}
                   </FormItem>
                 </div>
               </Col>
@@ -261,7 +264,7 @@ class Basic extends React.Component {
                       initialValue: modalData.moral
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入德育分' />
-                    )}
+                        )}
                   </FormItem>
                 </div>
               </Col>
@@ -277,7 +280,7 @@ class Basic extends React.Component {
                       initialValue: modalData.academic
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入学术科研分' />
-                    )}
+                        )}
                   </FormItem>
                 </div>
               </Col>
@@ -295,7 +298,7 @@ class Basic extends React.Component {
                     })(
                       <Input style={{ width: '150px' }}
                         placeholder='请输入学术科研备注' />
-                    )}
+                        )}
                   </FormItem>
                 </div>
               </Col>
@@ -311,7 +314,7 @@ class Basic extends React.Component {
                       initialValue: modalData.duty
                     })(
                       <Input style={{ width: '150px' }} placeholder='请输入职务分' />
-                    )}
+                        )}
                   </FormItem>
                 </div>
               </Col>
@@ -329,7 +332,7 @@ class Basic extends React.Component {
                     })(
                       <Input style={{ width: '150px' }}
                         placeholder='请输入职务分备注' />
-                    )}
+                        )}
                   </FormItem>
                 </div>
               </Col>
