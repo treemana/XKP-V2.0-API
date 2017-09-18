@@ -198,8 +198,7 @@ class ClassManage extends React.Component {
               </FormItem>
             </Col>
             <Col span={8}>
-              <FormItem
-                key={new Date().getTime()}>
+              <FormItem>
                 {getFieldDecorator('name', {
                   rules: [{ required: true, max:20, message: '请输入正确姓名!' }]
                 })(
