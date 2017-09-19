@@ -198,7 +198,9 @@ class TableQuery extends React.Component {
   }
   downLoad = () => {
     const { classes } = this.state
-    universalFetch(`${__API__}benchmark/download/${classes}`)
+    universalFetch(`${__API__}benchmark/download/${classes}`, {
+      contentType: 'application/octet-stream'
+    })
     .then(res => res.json())
     .then((json) => {
       console.log(json)
@@ -502,10 +504,12 @@ class TableQuery extends React.Component {
             </Button>
           </Col>
           <Col span={2}>
-            <Button type='primary' onClick={this.downLoad} disabled={!(acatemy && specialty && grade && classes)}>
-              <Icon type='cloud-download' />
-              下载
-            </Button>
+            <a href={`${__API__}benchmark/download/${classes}`}>
+              <Button type='primary' disabled={!(acatemy && specialty && grade && classes)}>
+                <Icon type='cloud-download' />
+                下载
+              </Button>
+            </a>
           </Col>
         </Row>
       </div>

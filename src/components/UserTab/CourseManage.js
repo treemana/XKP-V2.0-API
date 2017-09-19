@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styles from './CourseManage.css'
-import { Table, Icon, Input, Select, Popconfirm } from 'antd'
+import { Table, Icon, Input, Select, Popconfirm, Message } from 'antd'
 import universalFetch, { handleFetchError } from '../../utils/fetch'
 const Option = Select.Option
 type Props = {
@@ -77,7 +77,7 @@ class CourseManage extends React.Component {
             num: index + 1,
             name: item.name,
             score: item.credit,
-            type: item.type === true ? '考试' : '考察',
+            type: item.type === true ? '考试' : '考查',
             operate: <Popconfirm title='确定删除该课程么？' onConfirm={function () { delCourse(item) }}
               okText='确认' cancelText='取消'>
               <span className={styles['operate']}>
@@ -102,7 +102,6 @@ class CourseManage extends React.Component {
       scoreError: true
     })
     if (!(name && score && type)) {
-      console.log(1)
       return
     }
     if ((nameError && scoreError && typeError)) {
@@ -128,6 +127,7 @@ class CourseManage extends React.Component {
     .then(res => res.json())
     .then((json) => {
       if (json.code !== 0) {
+        Message.error('添加课程失败TnT')
         throw new Error(JSON.stringify(
           {
             code: json.code,
@@ -135,6 +135,7 @@ class CourseManage extends React.Component {
           }
         ), 'CourseManage.js')
       }
+      Message.success('添加课程成功 ：)')
       this.setState({
         name: '',
         score: '',
@@ -208,7 +209,7 @@ class CourseManage extends React.Component {
           <Select style={{ width: '200px' }} onChange={this.changeType} placeholder='请选择类型'
             value={this.state.type}>
             <Option value='考试'>考试</Option>
-            <Option value='考察'>考察</Option>
+            <Option value='考查'>考查</Option>
           </Select>
           <span className={styles['error-text']}>{this.state.typeError ? '请选择课程类型' : null}</span>
         </div>
