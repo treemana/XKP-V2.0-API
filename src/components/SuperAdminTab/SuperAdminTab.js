@@ -7,6 +7,7 @@ import LoginSetting from './LoginSetting'
 import DataManage from './DataManage'
 import TableQuery from 'components/TableQuery'
 import ReleaseExplain from 'components/ReleaseExplain'
+import StudentQuery from 'components/StudentQuery'
 import ReactDom from 'react-dom'
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
@@ -88,6 +89,15 @@ class SuperAdminTab extends React.Component {
         setTimeout(() => {
           const container = document.querySelector(`#tab${activeKey}`)
           ReactDom.render(
+            <StudentQuery />,
+            container
+          )
+        }, 0)
+        break
+      case '7':
+        setTimeout(() => {
+          const container = document.querySelector(`#tab${activeKey}`)
+          ReactDom.render(
             <ReleaseExplain />,
             container
           )
@@ -98,7 +108,7 @@ class SuperAdminTab extends React.Component {
     }
   }
   render () {
-    const tabList = ['管理员设置', '登录设置', '数据管理', '大表查询', '发布说明']
+    const tabList = ['管理员设置', '登录设置', '数据管理', '大表查询', '发布说明', '学生查询']
     const { data } = this.props
     return <div className={styles['main']}>
       <Tabs defaultActiveKey='1' onChange={this.changeTab}>

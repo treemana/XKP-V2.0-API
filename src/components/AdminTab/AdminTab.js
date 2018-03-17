@@ -6,6 +6,7 @@ import TableQuery from 'components/TableQuery'
 import SpecialtyManage from './SpecialtyManage'
 import ClassManage from './ClassManage'
 import AdminManage from 'components/SuperAdminTab/AdminManage'
+import StudentQuery from 'components/StudentQuery'
 import ReactDom from 'react-dom'
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
@@ -84,13 +85,22 @@ class AdminTab extends React.Component {
           )
         }, 0)
         break
+      case '6':
+        setTimeout(() => {
+          const container = document.querySelector(`#tab${activeKey}`)
+          ReactDom.render(
+            <StudentQuery />,
+            container
+          )
+        }, 0)
+        break
       default:
         return null
     }
   }
   render () {
     const { data } = this.props
-    const tabList = ['班级管理', '管理员设置', '大表查询', '发布说明']
+    const tabList = ['班级管理', '管理员设置', '大表查询', '发布说明', '学生查询']
     return <div className={styles['main']}>
       <Tabs defaultActiveKey='1' onChange={this.changeTab}>
         <TabPane tab='专业管理' key='1'>
