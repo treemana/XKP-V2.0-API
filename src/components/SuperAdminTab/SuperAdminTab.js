@@ -89,7 +89,7 @@ class SuperAdminTab extends React.Component {
         setTimeout(() => {
           const container = document.querySelector(`#tab${activeKey}`)
           ReactDom.render(
-            <StudentQuery />,
+            <ReleaseExplain />,
             container
           )
         }, 0)
@@ -98,7 +98,7 @@ class SuperAdminTab extends React.Component {
         setTimeout(() => {
           const container = document.querySelector(`#tab${activeKey}`)
           ReactDom.render(
-            <ReleaseExplain />,
+            <StudentQuery />,
             container
           )
         }, 0)
