@@ -196,9 +196,9 @@ class TableQuery extends React.Component {
       .catch(handleFetchError)
     }
   }
-  downLoad = () => {
+  downLoadDocx = () => {
     const { classes } = this.state
-    universalFetch(`${__API__}benchmark/download/${classes}`, {
+    universalFetch(`${__API__}benchmark/download-docx/${classes}`, {
       contentType: 'application/octet-stream'
     })
     .then(res => res.json())
@@ -215,6 +215,25 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
+  downLoadXlsx = () => {
+    const { classes } = this.state
+    universalFetch(`${__API__}benchmark/download-xlsx/${classes}`, {
+      contentType: 'application/octet-stream'
+    })
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json)
+      if (json.code !== 0) {
+        throw new Error(JSON.stringify(
+          {
+            code: json.code,
+            message: json.message
+          }
+        ), 'TableQuery.js')
+      }
+    })
+    .catch(handleFetchError)
+  }                                                                                                                                                                                                                                                                                                                                                                                               
   componentWillMount () {
     const { data } = this.props
     this.getAcatemy()
@@ -413,7 +432,7 @@ class TableQuery extends React.Component {
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>
-          <Col span={5}>
+          <Col span={4}>
             {
               acatemy
               ? <Select style={{ width: 150 }} onChange={this.changeAcatemy} placeholder='请选择学院'
@@ -433,7 +452,7 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={5}>
+          <Col span={4}>
             {
               specialty
               ? <Select style={{ width: 150 }} key={acatemy} onChange={this.changeSpecialty}
@@ -454,7 +473,7 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={5}>
+          <Col span={4}>
             {
               grade
               ? <Select style={{ width: 150 }} key={acatemy + specialty} onChange={this.changeGrade} value={grade}
@@ -475,7 +494,7 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={5}>
+          <Col span={4}>
             {
               classes
               ? <Select style={{ width: 150 }} key={acatemy + specialty + classes}
@@ -503,11 +522,19 @@ class TableQuery extends React.Component {
               确定
             </Button>
           </Col>
-          <Col span={2}>
-            <a href={`${__API__}benchmark/download/${classes}`}>
+          <Col span={3}>
+            <a href={`${__API__}benchmark/download-docx/${classes}`}>
               <Button type='primary' disabled={!(acatemy && specialty && grade && classes)}>
                 <Icon type='cloud-download' />
-                下载
+                Word下载
+              </Button>
+            </a>
+          </Col>
+          <Col span={3}>
+            <a href={`${__API__}benchmark/download-xlsx/${classes}`}>
+              <Button type='primary' disabled={!(acatemy && specialty && grade && classes)}>
+                <Icon type='cloud-download' />
+                Excel下载
               </Button>
             </a>
           </Col>

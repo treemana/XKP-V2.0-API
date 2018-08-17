@@ -26,7 +26,7 @@ const config = {
   // ----------------------------------
   server_host : ip.address(), // use string 'localhost' to prevent exposure on local network
   server_port : process.env.PORT || 3000,
-  api: process.env.API || 'http://127.0.0.1:9090/',
+  api: process.env.API || 'http://222.27.227.102:8080/xkp-api/',
   // api: process.env.API || 'http://222.27.239.77:8080/xkp/',
   // ----------------------------------
   // Compiler Configuration
