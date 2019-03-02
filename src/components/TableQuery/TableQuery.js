@@ -10,6 +10,7 @@ type Props = {
 type States = {
   specialty: string,
   classes: string,
+  semester: string,
   acatemy: string,
   grade: string,
   dataSource: Array<Object>,
@@ -17,6 +18,7 @@ type States = {
   classList: Array<Object>,
   acatemyList: Array<Object>,
   gradeList: Array<string>,
+  semesterList: Array<string>,
   showTable: boolean,
   columns: Array<Object>,
   buttonClick: boolean
@@ -40,11 +42,13 @@ class TableQuery extends React.Component {
     this.state = {
       specialty: '',
       classes: '',
+      semester: '',
       acatemy: '',
       grade: '',
       acatemyList: [],
       specialtyList: [],
       classList: [],
+      semesterList: [],
       gradeList: [],
       dataSource: [],
       showTable: false,
@@ -59,7 +63,7 @@ class TableQuery extends React.Component {
     }
     this.setState({
       buttonClick: true
-    })
+    }) 
     universalFetch(`${__API__}course/${classes}`)
     .then(res => res.json())
     .then((json) => {
@@ -188,6 +192,32 @@ class TableQuery extends React.Component {
         this.setState({
           classes: data.classId.toString(),
           classList: [{
+            systemId: data.classId,
+            name: json.data
+          }]
+        })
+      })
+      .catch(handleFetchError)
+    }
+  }
+  getSemester = () => {
+    const { data } = this.props
+    if (data.type === 'C') {
+      universalFetch(`${__API__}history/benchmark/${data.classId}`)
+      .then(res => res.json())
+      .then((json) => {
+        console.log(json)
+        if (json.code !== 0) {
+          throw new Error(JSON.stringify(
+            {
+              code: json.code,
+              message: json.message
+            }
+          ), 'TableQuery.js')
+        }
+        this.setState({
+          classes: data.classId.toString(),
+          semesterList: [{
             systemId: data.classId,
             name: json.data
           }]
@@ -397,11 +427,6 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
-  changeClass = (value: string) => {
-    this.setState({
-      classes: value
-    })
-  }
   changeGrade = (value: string) => {
     const { specialty } = this.state
     this.setState({
@@ -426,13 +451,36 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
+  changeClass = (value: string) => {
+    this.setState({
+      classes: value,
+      semester: ''
+    })
+    universalFetch(`${__API__}history/title?classId=${classes}`)
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json)
+      if (json.code !== 0) {
+        throw new Error(JSON.stringify(
+          {
+            code: json.code,
+            message: json.message
+          }
+        ), 'AdminManage.js')
+      }
+      this.setState({
+        semesterList: json.data
+      })
+    })
+    .catch(handleFetchError)
+  }
   render () {
-    const { specialty, acatemy, grade, acatemyList, specialtyList, classList,
-      gradeList, showTable, classes, columns } = this.state
+    const { specialty, acatemy, grade, acatemyList, specialtyList, classList, semesterList,
+      gradeList, showTable, classes, semester, columns } = this.state
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>
-          <Col span={4}>
+          <Col span={3}>
             {
               acatemy
               ? <Select style={{ width: 150 }} onChange={this.changeAcatemy} placeholder='请选择学院'
@@ -452,7 +500,7 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             {
               specialty
               ? <Select style={{ width: 150 }} key={acatemy} onChange={this.changeSpecialty}
@@ -473,7 +521,7 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             {
               grade
               ? <Select style={{ width: 150 }} key={acatemy + specialty} onChange={this.changeGrade} value={grade}
@@ -494,10 +542,10 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             {
               classes
-              ? <Select style={{ width: 150 }} key={acatemy + specialty + classes}
+              ? <Select style={{ width: 150 }} key={acatemy + specialty + grade}
                 onChange={this.changeClass} value={classes}
                 placeholder='请选择班级' disabled={!(acatemy && specialty && grade)}>
                 {
@@ -516,7 +564,29 @@ class TableQuery extends React.Component {
               </Select>
             }
           </Col>
-          <Col span={2}>
+          <Col span={3}>
+            {
+              semester
+              ? <Select style={{ width: 150 }} key={acatemy + specialty + grade + classes}
+                onChange={this.changeSemester} value={semester}
+                placeholder='选择年份（选填）' disabled={!(acatemy && specialty && grade && classes)}>
+                {
+                  classList.map((item, index) => {
+                    return <Option value={item.systemId.toString()} key={index}>{item.name}</Option>
+                  })
+                }
+              </Select>
+              : <Select style={{ width: 150 }} onChange={this.changeSemester}
+                placeholder='年份选择' disabled={!(acatemy && specialty && grade && classes)}>
+                {
+                  semesterList.map((item, index) => {
+                    return <Option value={item.systemId.toString()} key={index}>{item.name}</Option>
+                  })
+                }
+              </Select>
+            }
+          </Col>
+          <Col span={3}>
             <Button type='primary' onClick={this.queryData} disabled={!(acatemy && specialty && grade && classes)}>
               <Icon type='search' />
               确定
