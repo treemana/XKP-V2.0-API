@@ -577,7 +577,7 @@ class TableQuery extends React.Component {
                 }
               </Select>
               : <Select style={{ width: 150 }} onChange={this.changeSemester}
-                placeholder='年份选择' disabled={!(acatemy && specialty && grade && classes)}>
+                placeholder='选择年份（选填）' disabled={!(acatemy && specialty && grade && classes)}>
                 {
                   semesterList.map((item, index) => {
                     return <Option value={item.systemId.toString()} key={index}>{item.name}</Option>
