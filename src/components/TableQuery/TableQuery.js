@@ -18,7 +18,7 @@ type States = {
   classList: Array<Object>,
   acatemyList: Array<Object>,
   gradeList: Array<string>,
-  semesterList: Array<string>,
+  semesterList: Array<Object>,
   showTable: boolean,
   columns: Array<Object>,
   buttonClick: boolean
@@ -42,7 +42,7 @@ class TableQuery extends React.Component {
     this.state = {
       specialty: '',
       classes: '',
-      semester: '',
+      semester: '当前学期',
       acatemy: '',
       grade: '',
       acatemyList: [],
@@ -63,8 +63,100 @@ class TableQuery extends React.Component {
     }
     this.setState({
       buttonClick: true
-    }) 
+    })
     universalFetch(`${__API__}course/${classes}`)
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json)
+      if (json.code !== 0) {
+        throw new Error(JSON.stringify(
+          {
+            code: json.code,
+            message: json.message
+          }
+        ), 'CourseManage.js')
+      }
+      const columns1 = json.data.map((item, index) => {
+        return {
+          title: <span>{item.name}<br />({item.credit}分)</span>,
+          width: 40,
+          dataIndex: item.systemId,
+          key: item.systemId,
+          type: item.type
+        }
+      })
+      this.setState({
+        showTable: true,
+        buttonClick: false,
+        columns: [ ...initColumns, ...columns1, {
+          title: '学术科研与素质教育',
+          dataIndex: 'academic',
+          width: 40,
+          key: 'academic'
+        }, {
+          title: '平均绩点',
+          dataIndex: 'point',
+          width: 40,
+          key: 'point'
+        }, {
+          title: '操行评定',
+          dataIndex: 'behavior',
+          width: 40,
+          key: 'behavior'
+        }, {
+          title: '德育',
+          dataIndex: 'moral',
+          width: 40,
+          key: 'moral'
+        }, {
+          title: '文体',
+          dataIndex: 'activity',
+          width: 40,
+          key: 'activity'
+        }, {
+          title: '其他',
+          dataIndex: 'other',
+          width: 40,
+          key: 'other'
+        }, {
+          title: '职务',
+          dataIndex: 'dutyDesc',
+          width: 200,
+          key: 'dutyDesc'
+        }, {
+          title: '智育',
+          dataIndex: 'score',
+          width: 80,
+          key: 'score'
+        }, {
+          title: '总分',
+          dataIndex: 'total',
+          width: 80,
+          key: 'total'
+        }, {
+          title: '综合排名',
+          dataIndex: 'complexRank',
+          width: 50,
+          key: 'complexRank'
+        }, {
+          title: '智育排名',
+          dataIndex: 'scoreRank',
+          width: 40,
+          key: 'scoreRank'
+        }]
+      })
+    })
+    .catch(handleFetchError)
+  }
+  getHistoryCourse = () => {
+    const { semester, buttonClick } = this.state
+    if (buttonClick) {
+      return
+    }
+    this.setState({
+      buttonClick: true
+    })
+    universalFetch(`${__API__}/history/course/${semester}`)
     .then(res => res.json())
     .then((json) => {
       console.log(json)
@@ -203,7 +295,7 @@ class TableQuery extends React.Component {
   getSemester = () => {
     const { data } = this.props
     if (data.type === 'C') {
-      universalFetch(`${__API__}history/benchmark/${data.classId}`)
+      universalFetch(`${__API__}history/title/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
         console.log(json)
@@ -216,7 +308,7 @@ class TableQuery extends React.Component {
           ), 'TableQuery.js')
         }
         this.setState({
-          classes: data.classId.toString(),
+          semester: data.systemId.toString(),
           semesterList: [{
             systemId: data.classId,
             name: json.data
@@ -378,12 +470,62 @@ class TableQuery extends React.Component {
     })
     .catch(handleFetchError)
   }
+  queryHistory = () => {
+    this.getHistoryCourse()
+    const { semester } = this.state
+    let source = []
+    universalFetch(`${__API__}/history/benchmark/${semester}`)
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json)
+      if (json.code !== 0) {
+        throw new Error(JSON.stringify(
+          {
+            code: json.code,
+            message: json.message
+          }
+        ), 'TableQuery.js')
+      }
+      json.data.map((item, index) => {
+        const base = {
+          key: item.studentNumber,
+          num: item.studentNumber,
+          name: item.name,
+          academic: item.academic,
+          activity: item.activity,
+          behavior: item.behavior,
+          complexRank: item.complexRank,
+          dutyDesc: item.dutyDesc,
+          moral: item.moral,
+          other: item.other,
+          point: item.point,
+          score: item.score,
+          scoreRank: item.scoreRank,
+          total: item.total
+        }
+        const more = {}
+        item.marks.map((mark, i) => {
+          const m = {
+            [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
+          }
+          Object.assign(more, m)
+        })
+        source.push(Object.assign(base, more))
+      })
+      this.setState({
+        showTable: true,
+        dataSource: source
+      })
+    })
+    .catch(handleFetchError)
+  }
   changeAcatemy = (value: string) => {
     this.setState({
       acatemy: value,
       specialty: '',
       grade: '',
-      classes: ''
+      classes: '',
+      semester: '当前学期'
     })
     universalFetch(`${__API__}specialty/${value}`)
     .then(res => res.json())
@@ -407,7 +549,8 @@ class TableQuery extends React.Component {
     this.setState({
       specialty: value,
       grade: '',
-      classes: ''
+      classes: '',
+      semester: '当前学期'
     })
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
@@ -431,7 +574,8 @@ class TableQuery extends React.Component {
     const { specialty } = this.state
     this.setState({
       grade: value,
-      classes: ''
+      classes: '',
+      semester: '当前学期'
     })
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${value}`)
     .then(res => res.json())
@@ -452,11 +596,12 @@ class TableQuery extends React.Component {
     .catch(handleFetchError)
   }
   changeClass = (value: string) => {
+    console.log(value)
     this.setState({
       classes: value,
-      semester: ''
+      semester: '当前学期'
     })
-    universalFetch(`${__API__}history/title?classId=${classes}`)
+    universalFetch(`${__API__}history/title/${value}`)
     .then(res => res.json())
     .then((json) => {
       console.log(json)
@@ -468,11 +613,21 @@ class TableQuery extends React.Component {
           }
         ), 'AdminManage.js')
       }
+      json.data.push({
+        systemId: 'now',
+        name: '当前学期'
+      })
       this.setState({
         semesterList: json.data
       })
     })
     .catch(handleFetchError)
+  }
+  changeSemester = (value: string) => {
+    console.log(value);
+    this.setState({
+      semester: value
+    })
   }
   render () {
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList, semesterList,
@@ -568,16 +723,16 @@ class TableQuery extends React.Component {
             {
               semester
               ? <Select style={{ width: 150 }} key={acatemy + specialty + grade + classes}
-                onChange={this.changeSemester} value={semester}
-                placeholder='选择年份（选填）' disabled={!(acatemy && specialty && grade && classes)}>
+                onChange={this.changeSemester} value={semester} defaultValue={semester}
+                placeholder='请选择学期' disabled={!(acatemy && specialty && grade && classes)}>
                 {
-                  classList.map((item, index) => {
+                  semesterList.map((item, index) => {
                     return <Option value={item.systemId.toString()} key={index}>{item.name}</Option>
                   })
                 }
               </Select>
-              : <Select style={{ width: 150 }} onChange={this.changeSemester}
-                placeholder='选择年份（选填）' disabled={!(acatemy && specialty && grade && classes)}>
+              : <Select style={{ width: 150 }} onChange={this.changeSemester} defaultValue={semester}
+                placeholder='请选择学期' disabled={!(acatemy && specialty && grade && classes)} >
                 {
                   semesterList.map((item, index) => {
                     return <Option value={item.systemId.toString()} key={index}>{item.name}</Option>
@@ -587,14 +742,14 @@ class TableQuery extends React.Component {
             }
           </Col>
           <Col span={3}>
-            <Button type='primary' onClick={this.queryData} disabled={!(acatemy && specialty && grade && classes)}>
+            <Button type='primary' onClick={(semester === '当前学期' || semester === 'now') ? this.queryData : this.queryHistory} disabled={!(acatemy && specialty && grade && classes)}>
               <Icon type='search' />
               确定
             </Button>
           </Col>
           <Col span={3}>
             <a href={`${__API__}benchmark/download-docx/${classes}`}>
-              <Button type='primary' disabled={!(acatemy && specialty && grade && classes)}>
+              <Button type='primary' disabled={!((acatemy && specialty && grade && classes) && (semester === 'now' || semester === '当前学期'))}>
                 <Icon type='cloud-download' />
                 Word下载
               </Button>
@@ -602,7 +757,7 @@ class TableQuery extends React.Component {
           </Col>
           <Col span={3}>
             <a href={`${__API__}benchmark/download-xlsx/${classes}`}>
-              <Button type='primary' disabled={!(acatemy && specialty && grade && classes)}>
+              <Button type='primary' disabled={!((acatemy && specialty && grade && classes) && (semester === 'now' || semester === '当前学期'))}>
                 <Icon type='cloud-download' />
                 Excel下载
               </Button>
