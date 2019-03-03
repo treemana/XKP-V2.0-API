@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './ResultInput.css'
 import universalFetch, { handleFetchError } from '../../utils/fetch'
-import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button } from 'antd'
+import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button, Upload } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
 type States = {
@@ -38,6 +38,31 @@ class ResultInput extends React.Component {
       modalData: {},
       courseData: []
     }
+  }
+  uploadExcel (info) {
+    console.log(info)
+    universalFetch(`${__API__}scoretable`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      body: info
+    })
+      .then(res => res.json())
+      .then((json) => {
+        console.log(json)
+        if (json.code !== 0) {
+          throw new Error(JSON.stringify(
+            {
+              code: json.code,
+              message: json.message
+            }
+          ), 'ResultInput.js')
+        }
+        this.getScore()
+        message.success('修改成功')
+      })
+      .catch(handleFetchError)
   }
   handleSubmit = (e: Object) => {
     const { modalData, courseData } = this.state
@@ -192,6 +217,11 @@ class ResultInput extends React.Component {
     const { getFieldDecorator } = this.props.form
     const { columns, dataSource, modalData, courseData, visible } = this.state
     return <div className={styles['result-main']}>
+      <Row className={styles['uploadButton']}>
+        <Upload onChange={this.uploadExcel}>
+          <Button type='primary'><Icon type='upload' />Excel导入</Button>
+        </Upload>
+      </Row>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
         title='修改成绩'

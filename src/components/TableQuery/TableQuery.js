@@ -294,6 +294,7 @@ class TableQuery extends React.Component {
   }
   getSemester = () => {
     const { data } = this.props
+    console.log(data)
     if (data.type === 'C') {
       universalFetch(`${__API__}history/title/${data.classId}`)
       .then(res => res.json())
@@ -307,12 +308,12 @@ class TableQuery extends React.Component {
             }
           ), 'TableQuery.js')
         }
+        json.data.push({
+          systemId: 'now',
+          name: '当前学期'
+        })
         this.setState({
-          semester: data.systemId.toString(),
-          semesterList: [{
-            systemId: data.classId,
-            name: json.data
-          }]
+          semesterList: json.data
         })
       })
       .catch(handleFetchError)
@@ -361,6 +362,7 @@ class TableQuery extends React.Component {
     this.getAcatemy()
     this.getSpecialty()
     this.getClass()
+    this.getSemester()
     if (data.type === 'C') {
       this.setState({
         grade: data.grade,
@@ -624,7 +626,6 @@ class TableQuery extends React.Component {
     .catch(handleFetchError)
   }
   changeSemester = (value: string) => {
-    console.log(value);
     this.setState({
       semester: value
     })
