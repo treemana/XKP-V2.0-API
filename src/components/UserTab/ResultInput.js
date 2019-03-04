@@ -1,11 +1,11 @@
 // @flow
 import React from 'react'
 import styles from './ResultInput.css'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
-import {Button, Col, Form, Icon, Input, message, Modal, Row, Select, Spin, Table} from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
+import { Button, Col, Form, Icon, Input, message, Modal, Row, Select, Spin, Table } from 'antd'
 
-const FormItem = Form.Item;
-const Option = Select.Option;
+const FormItem = Form.Item
+const Option = Select.Option
 type States = {
   columns: Array<Object>,
   dataSource: Array<Object>,
@@ -19,10 +19,10 @@ type Props = {
   form: Object
 }
 class ResultInput extends React.Component {
-    props: Props;
-    state: States;
+  props: Props;
+  state: States;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       uploading: false,
       columns: [{
@@ -43,25 +43,25 @@ class ResultInput extends React.Component {
     }
   }
   uploadExcel = (info) => {
-      console.log(info);
+    console.log(info)
     this.setState({
       uploading: true
-    });
-      const file = info.target.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
+    })
+    const file = info.target.files[0]
+    const formData = new FormData()
+    formData.append('file', file)
     universalFetch(`${__API__}score-table`, {
       method: 'POST',
       body: formData
     })
       .then(res => res.json())
       .then((json) => {
-          console.log(json.code);
+        console.log(json.code)
         if (json.code !== 0) {
-            console.log(json.code);
+          console.log(json.code)
           this.setState({
             uploading:false
-          });
+          })
           throw new Error(JSON.stringify(
             {
               code: json.code,
@@ -81,10 +81,10 @@ class ResultInput extends React.Component {
             dataIndex: 'name',
             key: 'name'
           }]
-        });
-          this.getCourse();
-          this.getScore();
-          message.success('导入成功');
+        })
+        this.getCourse()
+        this.getScore()
+        message.success('导入成功')
         this.setState({
           uploading:false
         })
@@ -92,34 +92,34 @@ class ResultInput extends React.Component {
       .catch(handleFetchError)
   };
   handleSubmit = (e: Object) => {
-      const {modalData, courseData} = this.state;
-      console.log(modalData, courseData);
-      e.preventDefault();
+    const { modalData, courseData } = this.state
+    console.log(modalData, courseData)
+    e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-          const courses = Object.keys(values);
-          let marks = [];
+        const courses = Object.keys(values)
+        let marks = []
         courses.map((item) => {
-            let mark = {};
-            mark.courseId = item;
-            let type;
+          let mark = {}
+          mark.courseId = item
+          let type
           courseData.map((course) => {
             if (course.systemId.toString() === item) {
               type = course.type
             }
-          });
-            mark.type = type;
+          })
+          mark.type = type
           if (type) {
             mark.examination = values[item]
           } else {
             mark.inspection = values[item]
           }
           marks.push(mark)
-        });
+        })
         const data = {
           studentId: modalData.studentId,
           marks: marks
-        };
+        }
         universalFetch(`${__API__}score`, {
           method: 'PUT',
           headers: {
@@ -129,7 +129,7 @@ class ResultInput extends React.Component {
         })
           .then(res => res.json())
           .then((json) => {
-              console.log(json);
+            console.log(json)
             if (json.code !== 0) {
               throw new Error(JSON.stringify(
                 {
@@ -138,10 +138,10 @@ class ResultInput extends React.Component {
                 }
               ), 'ResultInput.js')
             }
-              this.getScore();
+            this.getScore()
             this.setState({
               visible: false
-            });
+            })
             message.success('修改成功')
           })
           .catch(handleFetchError)
@@ -156,25 +156,25 @@ class ResultInput extends React.Component {
     })
   };
   componentWillMount () {
-      this.getCourse();
+    this.getCourse()
     this.getScore()
   }
   updateScore = (item: Object) => {
-      console.log(this.state.courseData);
-      console.log(item);
+    console.log(this.state.courseData)
+    console.log(item)
     this.setState({
       visible: true,
       modalData: item
     })
   };
   getScore = () => {
-      const {data} = this.props;
-      const updateScore = this.updateScore;
-      let source = [];
+    const { data } = this.props
+    const updateScore = this.updateScore
+    let source = []
     universalFetch(`${__API__}score/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-          console.log(json);
+        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -190,16 +190,16 @@ class ResultInput extends React.Component {
             name: item.name,
             operate: <span className={styles['operate']} onClick={() => { updateScore(item) }}>
               <Icon type='edit' />修改</span>
-          };
-            const more = {};
+          }
+          const more = {}
           item.marks.map((mark, i) => {
             const m = {
               [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
-            };
+            }
             Object.assign(more, m)
-          });
+          })
           source.push(Object.assign(base, more))
-        });
+        })
         this.setState({
           dataSource: source
         })
@@ -207,12 +207,12 @@ class ResultInput extends React.Component {
       .catch(handleFetchError)
   };
   getCourse = () => {
-      const {data} = this.props;
-      const {columns} = this.state;
+    const { data } = this.props
+    const { columns } = this.state
     universalFetch(`${__API__}course/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-          console.log(json);
+        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -228,7 +228,7 @@ class ResultInput extends React.Component {
             key: item.systemId,
             type: item.type
           }
-        });
+        })
         this.setState({
           courseData: json.data,
           columns: columns.concat(columns1).concat([{
@@ -242,8 +242,8 @@ class ResultInput extends React.Component {
       .catch(handleFetchError)
   };
   render () {
-      const {getFieldDecorator} = this.props.form;
-      const {columns, dataSource, modalData, courseData, visible, uploading} = this.state;
+    const { getFieldDecorator } = this.props.form
+    const { columns, dataSource, modalData, courseData, visible, uploading } = this.state
     return <div className={styles['result-main']}>
       <Row className={styles['uploadButton']}>
         <Button>

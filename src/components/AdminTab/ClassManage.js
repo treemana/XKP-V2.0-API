@@ -1,10 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './ClassManage.css'
-import {Button, Col, Icon, Input, Popconfirm, Row, Select, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Button, Col, Icon, Input, Popconfirm, Row, Select, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
-const Option = Select.Option;
+const Option = Select.Option
 
 type Props = {
   data: Object
@@ -19,10 +19,10 @@ type States = {
   dataSource: Array<Object>
 }
 class ClassManage extends React.Component {
-    props: Props;
-    state: States;
+  props: Props;
+  state: States;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       name: '',
       specialty: '',
@@ -34,11 +34,11 @@ class ClassManage extends React.Component {
     }
   }
   componentWillMount () {
-      this.getSpecialty();
+    this.getSpecialty()
     this.getGrade()
   }
   addClass = () => {
-      const {name, specialty, grade} = this.state;
+    const { name, specialty, grade } = this.state
     if (!name) {
       return
     }
@@ -46,7 +46,7 @@ class ClassManage extends React.Component {
       specialtyId: specialty,
       grade,
       name
-    };
+    }
     universalFetch(`${__API__}class`, {
       method: 'POST',
       headers: {
@@ -56,7 +56,7 @@ class ClassManage extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -67,7 +67,7 @@ class ClassManage extends React.Component {
       }
       this.setState({
         name: ''
-      });
+      })
       this.queryClass()
     })
     .catch(handleFetchError)
@@ -97,7 +97,7 @@ class ClassManage extends React.Component {
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -113,11 +113,11 @@ class ClassManage extends React.Component {
     .catch(handleFetchError)
   };
   getSpecialty = () => {
-      const {data} = this.props;
+    const { data } = this.props
     universalFetch(`${__API__}specialty/${data.academyId}`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -133,12 +133,12 @@ class ClassManage extends React.Component {
     .catch(handleFetchError)
   };
   queryClass = () => {
-      const delClass = this.delClass;
-      const {specialty, grade} = this.state;
+    const delClass = this.delClass
+    const { specialty, grade } = this.state
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${grade}`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -196,7 +196,7 @@ class ClassManage extends React.Component {
       dataIndex: 'operate',
       key: 'operate',
       width: '25%'
-    }];
+    }]
     const baseSource = [{
       key: 999999,
       num: 0,
@@ -204,8 +204,8 @@ class ClassManage extends React.Component {
         value={this.state.name} onChange={this.changeName} />,
       operate: <span className={styles['operate']} onClick={this.addClass}>
         <Icon type='plus-circle-o' />添加</span>
-    }];
-      const {specialty, grade, showTable, specialtyList, gradeList, dataSource} = this.state;
+    }]
+    const { specialty, grade, showTable, specialtyList, gradeList, dataSource } = this.state
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>

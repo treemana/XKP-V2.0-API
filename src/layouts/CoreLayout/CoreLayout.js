@@ -19,7 +19,7 @@ export const CoreLayout = () => (
       </Switch>
     </div>
   </div>
-);
+)
 
 export default CoreLayout
 // <Route path='/counter' component={routes.counter} exact />

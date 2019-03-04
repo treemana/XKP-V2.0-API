@@ -1,6 +1,6 @@
 // @flow
-import {connect} from 'react-redux'
-import {doubleAsync, increment} from 'store/modules/counter'
+import { connect } from 'react-redux'
+import { doubleAsync, increment } from 'store/modules/counter'
 import Counter from '../components/Counter'
 
 /*  This is a container component. Notice it does not contain any JSX,
@@ -15,11 +15,11 @@ import Counter from '../components/Counter'
 const mapDispatchToProps = {
   increment : () => increment(1),
   doubleAsync
-};
+}
 
 const mapStateToProps = (state) => ({
   counter : state.counter
-});
+})
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 

@@ -13,30 +13,30 @@ type States = {
   data: Object
 }
 class Home extends React.Component {
-    state: States;
-    props: Props;
+  state: States;
+  props: Props;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       data: {}
     }
   }
   renderComponent = () => {
-      const {data} = this.state;
+    const { data } = this.state
     if (data.data) {
       switch (data.data.type) {
         case 'A':
           return <SuperAdminTab {...{
             data: data.data
-          }} />;
+          }} />
         case 'B':
           return <AdminTab {...{
             data: data.data
-          }} />;
+          }} />
         case 'C':
           return <UserTab {...{
             data: data.data
-          }} />;
+          }} />
         default:
           return null
       }
@@ -46,7 +46,7 @@ class Home extends React.Component {
   // }
   componentWillMount () {
     if (!this.props.history.location.state) {
-        localStorage.clear();
+      localStorage.clear()
       this.props.history.push('/')
     } else {
       this.setState({

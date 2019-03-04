@@ -1,8 +1,8 @@
 // @flow
 import React from 'react'
 import styles from './SpecialtyManage.css'
-import {Icon, Input, Popconfirm, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Icon, Input, Popconfirm, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
 type Props = {
   data: Object
@@ -12,10 +12,10 @@ type States = {
   dataSource: Array<Object>
 }
 class SpecialtyManage extends React.Component {
-    props: Props;
-    state: States;
+  props: Props;
+  state: States;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       name: '',
       dataSource: []
@@ -43,12 +43,12 @@ class SpecialtyManage extends React.Component {
     .catch(handleFetchError)
   };
   getSpeciaty = () => {
-      const {data} = this.props;
-      const delSpeciaty = this.delSpeciaty;
+    const { data } = this.props
+    const delSpeciaty = this.delSpeciaty
     universalFetch(`${__API__}specialty/${data.academyId}`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -78,12 +78,12 @@ class SpecialtyManage extends React.Component {
     this.getSpeciaty()
   }
   addSpeciaty = () => {
-      const {data} = this.props;
-      const {name} = this.state;
+    const { data } = this.props
+    const { name } = this.state
     const postData = {
       academyId: data.academyId,
       name
-    };
+    }
     if (!name) {
       return
     }
@@ -106,7 +106,7 @@ class SpecialtyManage extends React.Component {
       }
       this.setState({
         name: ''
-      });
+      })
       this.getSpeciaty()
     })
     .catch(handleFetchError)
@@ -132,15 +132,15 @@ class SpecialtyManage extends React.Component {
       dataIndex: 'operate',
       key: 'operate',
       width: '25%'
-    }];
+    }]
     const baseSource = [{
       key: 999999,
       num: 0,
       name: <Input style={{ width: '300px' }} placeholder='新添加专业名称'
         value={this.state.name} onChange={this.changeName} />,
       operate: <span className={styles['operate']} onClick={this.addSpeciaty}><Icon type='plus-circle-o' />添加</span>
-    }];
-      const {dataSource} = this.state;
+    }]
+    const { dataSource } = this.state
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={baseSource.concat(dataSource)} />
     </div>

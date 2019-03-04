@@ -1,44 +1,44 @@
 // @flow
 import React from 'react'
-import {withRouter} from 'react-router'
-import {Link} from 'react-router-dom'
-import {Icon, Menu} from 'antd'
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
+import { Icon, Menu } from 'antd'
 import styles from './SideMenu.css'
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+const SubMenu = Menu.SubMenu
+const MenuItemGroup = Menu.ItemGroup
 
 type Props = {
   location: Location
 }
 
 class SideMenu extends React.Component {
-    props: Props;
+  props: Props;
 
   state: {
     current: string
   };
 
-    handleClick: (e: Object) => void;
+  handleClick: (e: Object) => void;
 
-    activeMenuItem: () => void;
+  activeMenuItem: () => void;
 
   constructor (props: Props) {
-      super(props);
+    super(props)
 
-      this.state = {current: '-1'};
+    this.state = { current: '-1' }
 
-      this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this)
     this.activeMenuItem = this.activeMenuItem.bind(this)
   }
 
   componentWillMount () {
-      const {location} = this.props;
+    const { location } = this.props
     this.activeMenuItem(location)
   }
 
   componentWillReceiveProps (nextProps: Props) {
-      const {location} = nextProps;
+    const { location } = nextProps
     this.activeMenuItem(location)
   }
 
@@ -47,15 +47,15 @@ class SideMenu extends React.Component {
   }
 
   activeMenuItem (location: Location) {
-      const {pathname} = location;
-      let key;
+    const { pathname } = location
+    let key
     switch (pathname) {
       case '/':
-          key = '-1';
-          break;
+        key = '-1'
+        break
       case '/github/k2data/repos':
-          key = '0';
-          break;
+        key = '0'
+        break
       default:
         key = '-1'
     }

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Table} from 'antd'
+import { Table } from 'antd'
 import m from 'moment'
 
 type Props = {
@@ -35,14 +35,14 @@ const columns = [{
   render: (text) => {
     return String(text)
   }
-}];
+}]
 
 export class GithubReposView extends React.Component {
-    props: Props;
+  props: Props;
 
   componentDidMount () {
-      console.log(this.props);
-      this.props.fetchRepos();
+    console.log(this.props)
+    this.props.fetchRepos()
     if (document.referrer === '') {
       console.log(1)
     } else {
@@ -51,7 +51,7 @@ export class GithubReposView extends React.Component {
   }
 
   render () {
-      const {isFetching, data} = this.props.repos || {};
+    const { isFetching, data } = this.props.repos || {}
     return (
       <div>
         <Table columns={columns} dataSource={data} size='middle'

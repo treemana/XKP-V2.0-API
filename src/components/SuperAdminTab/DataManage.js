@@ -1,8 +1,8 @@
 // @flow
 import React from 'react'
 import styles from './DataManage.css'
-import {Button, Icon, Input, message, Popconfirm, Spin, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Button, Icon, Input, message, Popconfirm, Spin, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
 type States = {
   grade: string,
@@ -10,9 +10,9 @@ type States = {
   dataSource: Array<Object>
 }
 class DataManage extends React.Component {
-    state: States;
+  state: States;
   constructor () {
-      super();
+    super()
     this.state = {
       grade: '',
       loading: false,
@@ -23,10 +23,10 @@ class DataManage extends React.Component {
     this.getGrade()
   }
   addGrade = () => {
-      const {grade} = this.state;
+    const { grade } = this.state
     const postData = {
       grade
-    };
+    }
     universalFetch(`${__API__}grade`, {
       method: 'POST',
       headers: {
@@ -46,7 +46,7 @@ class DataManage extends React.Component {
       }
       this.setState({
         grade: ''
-      });
+      })
       this.getGrade()
     })
     .catch(handleFetchError)
@@ -75,11 +75,11 @@ class DataManage extends React.Component {
   startTerm = () => {
     this.setState({
       loading: true
-    });
+    })
     universalFetch(`${__API__}data`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -90,17 +90,17 @@ class DataManage extends React.Component {
       }
       this.setState({
         loading: false
-      });
+      })
       message.success('成功')
     })
     .catch(handleFetchError)
   };
   getGrade = () => {
-      const delGrade = this.delGrade;
+    const delGrade = this.delGrade
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -141,14 +141,14 @@ class DataManage extends React.Component {
       dataIndex: 'operate',
       key: 'operate',
       width: '50%'
-    }];
+    }]
     const baseSource = [{
       key: 999999,
       grade: <Input style={{ width: '300px' }} placeholder='新添加年级'
         value={this.state.grade} onChange={this.changeGrade} />,
       operate: <span className={styles['operate']} onClick={this.addGrade}><Icon type='plus-circle-o' />添加</span>
-    }];
-      const {loading, dataSource} = this.state;
+    }]
+    const { loading, dataSource } = this.state
     return <div className={styles['main']}>
       <div className={styles['start']}>
         <Spin tip='Loading...' size='large' spinning={loading}>

@@ -1,10 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './LoginSetting.css'
-import {Button, Col, message, Radio, Row, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Button, Col, message, Radio, Row, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
-const RadioGroup = Radio.Group;
+const RadioGroup = Radio.Group
 
 type States = {
   radioValue: string,
@@ -14,9 +14,9 @@ type States = {
   selectGrade: Array<string>
 }
 class LoginSetting extends React.Component {
-    state: States;
+  state: States;
   constructor () {
-      super();
+    super()
     this.state = {
       radioValue: 'true',
       acatemyList: [],
@@ -26,12 +26,12 @@ class LoginSetting extends React.Component {
     }
   }
   componentWillMount () {
-      this.getAcatemy();
+    this.getAcatemy()
     this.getGrade()
   }
   sumbit = () => {
-      const {radioValue, selectAcatemy, selectGrade} = this.state;
-      let status;
+    const { radioValue, selectAcatemy, selectGrade } = this.state
+    let status
     if (radioValue === 'true') {
       status = true
     } else {
@@ -41,7 +41,7 @@ class LoginSetting extends React.Component {
       academyIds: selectAcatemy,
       grades: selectGrade,
       status: status
-    };
+    }
     universalFetch(`${__API__}login`, {
       method: 'PUT',
       headers: {
@@ -67,7 +67,7 @@ class LoginSetting extends React.Component {
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -91,7 +91,7 @@ class LoginSetting extends React.Component {
     universalFetch(`${__API__}academy`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -112,7 +112,7 @@ class LoginSetting extends React.Component {
     .catch(handleFetchError)
   };
   changeRadio = (e: Object) => {
-      console.log(e.target.value);
+    console.log(e.target.value)
     this.setState({
       radioValue: e.target.value
     })
@@ -122,32 +122,32 @@ class LoginSetting extends React.Component {
       title: '学院',
       dataIndex: 'name',
       key: 'name'
-    }];
+    }]
     const columns2 = [{
       title: '年级',
       dataIndex: 'name',
       key: 'name'
-    }];
+    }]
     const rowSelection1 = {
       onChange: (selectedRowKeys, selectedRows) => {
-          console.log(selectedRowKeys.length);
+        console.log(selectedRowKeys.length)
         this.setState({
           selectAcatemy: selectedRowKeys
         })
       }
-    };
+    }
     const rowSelection2 = {
       onChange: (selectedRowKeys, selectedRows) => {
-          const gradeList = [];
+        const gradeList = []
         selectedRows.map((item, index) => {
           gradeList.push(item.name)
-        });
+        })
         this.setState({
           selectGrade: gradeList
         })
       }
-    };
-      const {acatemyList, gradeList} = this.state;
+    }
+    const { acatemyList, gradeList } = this.state
     return <div className={styles['main']}>
       <Row>
         <Col span={12}>

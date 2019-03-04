@@ -1,10 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './AdminManage.css'
-import {Button, Col, Icon, Input, Modal, Popconfirm, Row, Select, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Button, Col, Icon, Input, Modal, Popconfirm, Row, Select, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
-const Option = Select.Option;
+const Option = Select.Option
 
 type Props = {
   data: Object
@@ -26,10 +26,10 @@ type States = {
   showTable: boolean
 }
 class AdminManage extends React.Component {
-    props: Props;
-    state: States;
+  props: Props;
+  state: States;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       name: '',
       specialty: '',
@@ -68,7 +68,7 @@ class AdminManage extends React.Component {
         visible: true,
         userName: json.data.username,
         initPwd: json.data.password
-      });
+      })
       this.queryAdmin()
     })
     .catch(handleFetchError)
@@ -103,7 +103,7 @@ class AdminManage extends React.Component {
     .catch(handleFetchError)
   };
   addAdmin = () => {
-      const {name, specialty, classes, acatemy, grade} = this.state;
+    const { name, specialty, classes, acatemy, grade } = this.state
     if (!name) {
       return
     }
@@ -114,7 +114,7 @@ class AdminManage extends React.Component {
       classId: classes,
       type: 'C',
       grade
-    };
+    }
     universalFetch(`${__API__}manager`, {
       method: 'POST',
       headers: {
@@ -124,7 +124,7 @@ class AdminManage extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -138,19 +138,19 @@ class AdminManage extends React.Component {
         name: '',
         userName: json.data.username,
         initPwd: json.data.password
-      });
+      })
       this.queryAdmin()
     })
     .catch(handleFetchError)
   };
   getAcatemy = () => {
-      const {data} = this.props;
-      console.log(data);
+    const { data } = this.props
+    console.log(data)
     if (data.academyId) {
       universalFetch(`${__API__}academy/${data.academyId}`)
       .then(res => res.json())
       .then((json) => {
-          console.log(json);
+        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -171,7 +171,7 @@ class AdminManage extends React.Component {
       universalFetch(`${__API__}academy`)
       .then(res => res.json())
       .then((json) => {
-          console.log(json);
+        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -188,10 +188,10 @@ class AdminManage extends React.Component {
     }
   };
   queryAdmin = () => {
-      const delAdmin = this.delAdmin;
-      const resetPwd = this.resetPwd;
-      const {specialty, classes, acatemy, grade} = this.state;
-      let url = `${__API__}manager?academyId=${acatemy}&`;
+    const delAdmin = this.delAdmin
+    const resetPwd = this.resetPwd
+    const { specialty, classes, acatemy, grade } = this.state
+    let url = `${__API__}manager?academyId=${acatemy}&`
     if (specialty) {
       url = url + `specialtyId=${specialty}&`
     }
@@ -204,7 +204,7 @@ class AdminManage extends React.Component {
     universalFetch(url)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -244,11 +244,11 @@ class AdminManage extends React.Component {
       specialty: '',
       classes: '',
       grade: ''
-    });
+    })
     universalFetch(`${__API__}specialty/${value}`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -268,11 +268,11 @@ class AdminManage extends React.Component {
       specialty: value,
       classes: '',
       grade: ''
-    });
+    })
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -293,15 +293,15 @@ class AdminManage extends React.Component {
     })
   };
   changeGrade = (value: string) => {
-      const {specialty} = this.state;
+    const { specialty } = this.state
     this.setState({
       grade: value,
       classes: ''
-    });
+    })
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${value}`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -337,7 +337,7 @@ class AdminManage extends React.Component {
       dataIndex: 'operate',
       key: 'operate',
       width: '25%'
-    }];
+    }]
     const baseSource = [{
       key: 999999,
       num: 0,
@@ -345,10 +345,10 @@ class AdminManage extends React.Component {
         value={this.state.name} />,
       operate: <span className={styles['operate']} onClick={this.addAdmin}>
         <Icon type='plus-circle-o' />添加</span>
-    }];
+    }]
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList,
         gradeList, showTable
-    } = this.state;
+    } = this.state
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>
