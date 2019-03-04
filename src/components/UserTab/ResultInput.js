@@ -280,11 +280,16 @@ class ResultInput extends React.Component {
             {
               modalData['marks'] && courseData.map((item, index) => {
                 if (item.type) { // 数字
-                  //遍历如果分数id===课程id，将分数追加于课程元素
+                  // 遍历如果分数id===课程id，将分数追加于课程元素
+                  let nullFlag = false // 判断该学生是否存在分数
                   for (let i: number = 0; i < modalData['marks'].length; i++) {
                     if (modalData['marks'][i]['courseId'] === item.systemId) {
                       item.score = modalData['marks'][i]['examination']
+                      nullFlag = true
                     }
+                  }
+                  if (nullFlag === false) {
+                    item.score = ''
                   }
                   return <FormItem
                     label={item.name}
@@ -297,10 +302,15 @@ class ResultInput extends React.Component {
                     })(<Input />)}
                   </FormItem>
                 } else { // 选择
+                  let nullFlag = false
                   for (let i: number = 0; i < modalData['marks'].length; i++) {
                     if (modalData['marks'][i]['courseId'] === item.systemId) {
                       item.score = modalData['marks'][i]['inspection']
+                      nullFlag = true
                     }
+                  }
+                  if (nullFlag === false) {
+                    item.score = ''
                   }
                   return <FormItem
                     label={item.name}
