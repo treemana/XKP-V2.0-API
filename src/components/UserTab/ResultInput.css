@@ -42,3 +42,13 @@
 .uploadButton {
   text-align: right;
 }
+.realfile {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  background-color: #fff;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  width: 100%;
+}

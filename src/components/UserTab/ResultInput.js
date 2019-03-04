@@ -2,13 +2,14 @@
 import React from 'react'
 import styles from './ResultInput.css'
 import universalFetch, { handleFetchError } from '../../utils/fetch'
-import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button, Upload } from 'antd'
+import { Table, Icon, Input, Select, Modal, Row, Col, message, Form, Button, Spin } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
 type States = {
   columns: Array<Object>,
   dataSource: Array<Object>,
   visible: boolean,
+  uploading: boolean,
   modalData: Object,
   courseData: Array<Object>
 }
@@ -22,6 +23,7 @@ class ResultInput extends React.Component {
   constructor (props: Props) {
     super(props)
     this.state = {
+      uploading: false,
       columns: [{
         title: '学号',
         width: 100,
@@ -39,19 +41,26 @@ class ResultInput extends React.Component {
       courseData: []
     }
   }
-  uploadExcel (info) {
+  uploadExcel = (info) => {
     console.log(info)
-    universalFetch(`${__API__}scoretable`, {
+    this.setState({
+      uploading: true
+    })
+    const file = info.target.files[0]
+    const formData = new FormData()
+    formData.append('file', file)
+    universalFetch(`${__API__}score-table`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      body: info
+      body: formData
     })
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+        console.log(json.code)
         if (json.code !== 0) {
+          console.log(json.code)
+          this.setState({
+            uploading:false
+          })
           throw new Error(JSON.stringify(
             {
               code: json.code,
@@ -59,13 +68,31 @@ class ResultInput extends React.Component {
             }
           ), 'ResultInput.js')
         }
+        this.setState({
+          columns: [{
+            title: '学号',
+            width: 100,
+            dataIndex: 'num',
+            key: 'num'
+          }, {
+            title: '姓名',
+            width: 70,
+            dataIndex: 'name',
+            key: 'name'
+          }]
+        })
+        this.getCourse()
         this.getScore()
-        message.success('修改成功')
+        message.success('导入成功')
+        this.setState({
+          uploading:false
+        })
       })
       .catch(handleFetchError)
   }
   handleSubmit = (e: Object) => {
     const { modalData, courseData } = this.state
+    console.log(modalData, courseData)
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -215,12 +242,13 @@ class ResultInput extends React.Component {
   }
   render () {
     const { getFieldDecorator } = this.props.form
-    const { columns, dataSource, modalData, courseData, visible } = this.state
+    const { columns, dataSource, modalData, courseData, visible, uploading } = this.state
     return <div className={styles['result-main']}>
       <Row className={styles['uploadButton']}>
-        <Upload onChange={this.uploadExcel}>
-          <Button type='primary'><Icon type='upload' />Excel导入</Button>
-        </Upload>
+        <Button>
+          <Spin spinning={uploading} size='small' />Excel导入
+          <input type='file' name='file' className={styles['realfile']} size='100' onChange={this.uploadExcel} />
+        </Button>
       </Row>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
@@ -251,7 +279,13 @@ class ResultInput extends React.Component {
           <Form onSubmit={this.handleSubmit}>
             {
               modalData['marks'] && courseData.map((item, index) => {
-                if (item.type) {
+                if (item.type) { // 数字
+                  //遍历如果分数id===课程id，将分数追加于课程元素
+                  for (let i: number = 0; i < modalData['marks'].length; i++) {
+                    if (modalData['marks'][i]['courseId'] === item.systemId) {
+                      item.score = modalData['marks'][i]['examination']
+                    }
+                  }
                   return <FormItem
                     label={item.name}
                     labelCol={{ span: 6 }}
@@ -259,12 +293,15 @@ class ResultInput extends React.Component {
                     key={index}
                   >
                     {getFieldDecorator(item.systemId.toString(), {
-                      initialValue: modalData['marks'][index] ? modalData['marks'][index]['examination'] : ''
-                    })(
-                      <Input />
-                    )}
+                      initialValue: item.score ? item.score : ''
+                    })(<Input />)}
                   </FormItem>
-                } else {
+                } else { // 选择
+                  for (let i: number = 0; i < modalData['marks'].length; i++) {
+                    if (modalData['marks'][i]['courseId'] === item.systemId) {
+                      item.score = modalData['marks'][i]['inspection']
+                    }
+                  }
                   return <FormItem
                     label={item.name}
                     labelCol={{ span: 6 }}
@@ -272,7 +309,7 @@ class ResultInput extends React.Component {
                     key={index}
                   >
                     {getFieldDecorator(item.systemId.toString(), {
-                      initialValue: modalData['marks'][index] ? modalData['marks'][index]['inspection'] : ''
+                      initialValue: item.score ? item.score : ''
                     })(
                       <Select>
                         <Option value={null}>未选</Option>
@@ -291,7 +328,7 @@ class ResultInput extends React.Component {
               wrapperCol={{ span: 8, offset: 4 }}
             >
               <Button type='primary' htmlType='submit'>
-                Submit
+                确定
               </Button>
             </FormItem>
           </Form>
