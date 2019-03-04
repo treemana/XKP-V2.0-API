@@ -1,12 +1,12 @@
-const cssnano = require('cssnano')
-const atImport = require('postcss-import')
-const atEach = require('postcss-each')
-const atVariables = require('postcss-at-rules-variables')
-const atIf = require('postcss-conditionals')
-const atFor = require('postcss-for')
-const customProperties = require('postcss-custom-properties')
-const mixins = require('postcss-mixins')
-const nested = require('postcss-nested')
+const cssnano = require('cssnano');
+const atImport = require('postcss-import');
+const atEach = require('postcss-each');
+const atVariables = require('postcss-at-rules-variables');
+const atIf = require('postcss-conditionals');
+const atFor = require('postcss-for');
+const customProperties = require('postcss-custom-properties');
+const mixins = require('postcss-mixins');
+const nested = require('postcss-nested');
 
 module.exports = {
   plugins: [
@@ -39,4 +39,4 @@ module.exports = {
       sourcemap     : true
     })
   ]
-}
+};

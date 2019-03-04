@@ -16,6 +16,6 @@ export const Counter = (props: {
       Double (Async)
     </button>
   </div>
-)
+);
 
 export default Counter

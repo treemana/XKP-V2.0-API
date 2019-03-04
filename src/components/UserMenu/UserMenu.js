@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { Menu, Dropdown, Icon } from 'antd'
+import {Dropdown, Icon, Menu} from 'antd'
 import styles from './UserMenu.css'
 
 const menu = (
@@ -14,7 +14,7 @@ const menu = (
     <Menu.Divider />
     <Menu.Item key='3'>登出</Menu.Item>
   </Menu>
-)
+);
 
 type Props = {
   user: Object,
@@ -29,6 +29,6 @@ export const UserMenu = ({ user, style }: Props) => (
       </a>
     </Dropdown>
   </div>
-)
+);
 
 export default UserMenu

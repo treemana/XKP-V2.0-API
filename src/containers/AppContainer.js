@@ -1,24 +1,24 @@
 // @flow
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import BrowserRouter from 'react-router-dom/BrowserRouter'
 import CoreLayout from 'layouts/CoreLayout'
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 
 type Props = {
   store: Object
 }
 
-const supportsHistory = 'pushState' in window.history
+const supportsHistory = 'pushState' in window.history;
 
 export class AppContainer extends Component {
-  props: Props
+    props: Props;
 
   shouldComponentUpdate () {
     return false
   }
 
   render () {
-    const { store } = this.props
+      const {store} = this.props;
 
     return (
       <Provider store={store}>

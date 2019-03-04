@@ -1,7 +1,7 @@
 // flow-typed signature: 5800b9dee6b8969ab2b5fa338d02a89f
 // flow-typed version: 473c121609/express_v4.x.x/flow_>=v0.32.x
 
-import type { Server } from 'http';
+import type {Server} from 'http';
 
 declare type express$RouterOptions = {
   caseSensitive?: boolean,

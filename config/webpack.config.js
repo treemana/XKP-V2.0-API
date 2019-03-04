@@ -1,15 +1,15 @@
-const argv = require('yargs').argv
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const project = require('./project.config')
-const debug = require('debug')('app:config:webpack')
+const argv = require('yargs').argv;
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const project = require('./project.config');
+const debug = require('debug')('app:config:webpack');
 
-const __DEV__ = project.globals.__DEV__
-const __PROD__ = project.globals.__PROD__
-const __TEST__ = project.globals.__TEST__
+const __DEV__ = project.globals.__DEV__;
+const __PROD__ = project.globals.__PROD__;
+const __TEST__ = project.globals.__TEST__;
 
-debug('Creating configuration.')
+debug('Creating configuration.');
 const webpackConfig = {
   name    : 'client',
   target  : 'web',
@@ -23,11 +23,11 @@ const webpackConfig = {
   },
   module : {},
   context: project.paths.client()
-}
+};
 // ------------------------------------
 // Entry Points
 // ------------------------------------
-const APP_ENTRY = project.paths.client('main.js')
+const APP_ENTRY = project.paths.client('main.js');
 
 webpackConfig.entry = {
   app : __DEV__
@@ -38,7 +38,7 @@ webpackConfig.entry = {
     ]
     : [APP_ENTRY],
   vendor : project.compiler_vendors
-}
+};
 
 // ------------------------------------
 // Bundle Output
@@ -47,15 +47,15 @@ webpackConfig.output = {
   filename   : `[name].[${project.compiler_hash_type}].js`,
   path       : project.paths.dist(),
   publicPath : project.compiler_public_path
-}
+};
 
 // ------------------------------------
 // Externals
 // ------------------------------------
-webpackConfig.externals = {}
-webpackConfig.externals['react/lib/ExecutionEnvironment'] = true
-webpackConfig.externals['react/lib/ReactContext'] = true
-webpackConfig.externals['react/addons'] = true
+webpackConfig.externals = {};
+webpackConfig.externals['react/lib/ExecutionEnvironment'] = true;
+webpackConfig.externals['react/lib/ReactContext'] = true;
+webpackConfig.externals['react/addons'] = true;
 
 // ------------------------------------
 // Plugins
@@ -72,7 +72,7 @@ webpackConfig.plugins = [
       collapseWhitespace : true
     }
   })
-]
+];
 
 // Ensure that the compiler exits on errors during testing so that
 // they do not get skipped and misreported.
@@ -91,13 +91,13 @@ if (__TEST__ && !argv.watch) {
 }
 
 if (__DEV__) {
-  debug('Enabling plugins for live development (HMR, NoErrors).')
+    debug('Enabling plugins for live development (HMR, NoErrors).');
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin()
   )
 } else if (__PROD__) {
-  debug('Enabling plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
+    debug('Enabling plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
   webpackConfig.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       sourceMap : true,
@@ -129,7 +129,7 @@ webpackConfig.module.rules = [{
   exclude : /node_modules/,
   loader  : 'babel-loader',
   options : project.compiler_babel
-}]
+}];
 
 // ------------------------------------
 // Style Rules
@@ -139,7 +139,7 @@ webpackConfig.module.rules = [{
 const CSS_LOADER_CONFIG = {
   sourceMap: true,
   minimize: false
-}
+};
 
 const CSS_LOADER_MODULES_CONFIG = {
   sourceMap: true,
@@ -147,9 +147,9 @@ const CSS_LOADER_MODULES_CONFIG = {
   modules: true,
   importLoaders: 1,
   localIdentName: '[name]__[local]___[hash:base64:5]'
-}
+};
 
-const CSS_PATTERN = /\.css$/
+const CSS_PATTERN = /\.css$/;
 
 webpackConfig.module.rules.push({
   test    : CSS_PATTERN,
@@ -166,7 +166,7 @@ webpackConfig.module.rules.push({
       loader: 'postcss-loader'
     }
   ]
-})
+});
 
 webpackConfig.module.rules.push({
   test    : CSS_PATTERN,
@@ -183,7 +183,7 @@ webpackConfig.module.rules.push({
       loader: 'postcss-loader'
     }
   ]
-})
+});
 
 // File rules
 /* eslint-disable */
@@ -250,7 +250,7 @@ webpackConfig.module.rules.push(
     loader: 'url-loader',
     options: { limit: 8192 }
   }
-)
+);
 /* eslint-enable */
 
 // ------------------------------------
@@ -260,19 +260,19 @@ webpackConfig.module.rules.push(
 // need to use the extractTextPlugin to fix this issue:
 // http://stackoverflow.com/questions/34133808/webpack-ots-parsing-error-loading-fonts/34133809#34133809
 if (!__DEV__) {
-  debug('Applying ExtractTextPlugin to CSS rules.')
+    debug('Applying ExtractTextPlugin to CSS rules.');
   webpackConfig.module.rules.filter((rule) =>
     rule.test.toString() === CSS_PATTERN.toString() &&
       rule.use.find((loader) => loader.loader === 'css-loader')
   ).forEach((rule) => {
-    const first = rule.use[0]
-    const rest = rule.use.slice(1)
+      const first = rule.use[0];
+      const rest = rule.use.slice(1);
     rule.use = ExtractTextPlugin.extract({
       fallback: first,
       use: rest,
       publicPath: '/dist'
     })
-  })
+  });
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin({
@@ -282,4 +282,4 @@ if (!__DEV__) {
   )
 }
 
-module.exports = webpackConfig
+module.exports = webpackConfig;

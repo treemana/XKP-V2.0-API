@@ -12,6 +12,6 @@ const Logo = ({ title = 'starter-kit', img = '/logo.png' }: Props) => (
     <img src={img} />
     {title}
   </div>
-)
+);
 
 export default Logo

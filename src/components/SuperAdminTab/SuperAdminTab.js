@@ -9,8 +9,9 @@ import TableQuery from 'components/TableQuery'
 import ReleaseExplain from 'components/ReleaseExplain'
 import StudentQuery from 'components/StudentQuery'
 import ReactDom from 'react-dom'
-import { Tabs } from 'antd'
-const TabPane = Tabs.TabPane
+import {Tabs} from 'antd'
+
+const TabPane = Tabs.TabPane;
 
 type Props = {
   data: Object
@@ -19,97 +20,97 @@ type States = {
   active: string
 }
 class SuperAdminTab extends React.Component {
-  props: Props
-  state: States
+    props: Props;
+    state: States;
   constructor (props: Props) {
-    super(props)
+      super(props);
     this.state = {
       active: '1'
     }
   }
   changeTab = (activeKey: string) => {
-    const { data } = this.props
-    const { active } = this.state
+      const {data} = this.props;
+      const {active} = this.state;
     if (activeKey === '1') {
       return
     }
     this.setState({
       active: activeKey
-    })
+    });
     if (active !== '1') {
-      const content = document.querySelector(`#tab${active}`)
+        const content = document.querySelector(`#tab${active}`);
       ReactDom.unmountComponentAtNode(content)
     }
     switch (activeKey) {
       case '2':
         setTimeout(() => {
-          const container = document.querySelector(`#tab${activeKey}`)
+            const container = document.querySelector(`#tab${activeKey}`);
           ReactDom.render(
             <AdminManage {...{
               data
             }} />,
             container
           )
-        }, 0)
-        break
+        }, 0);
+          break;
       case '3':
         setTimeout(() => {
-          const container = document.querySelector(`#tab${activeKey}`)
+            const container = document.querySelector(`#tab${activeKey}`);
           ReactDom.render(
             <LoginSetting {...{
               data
             }} />,
             container
           )
-        }, 0)
-        break
+        }, 0);
+          break;
       case '4':
         setTimeout(() => {
-          const container = document.querySelector(`#tab${activeKey}`)
+            const container = document.querySelector(`#tab${activeKey}`);
           ReactDom.render(
             <DataManage {...{
               data
             }} />,
             container
           )
-        }, 0)
-        break
+        }, 0);
+          break;
       case '5':
         setTimeout(() => {
-          const container = document.querySelector(`#tab${activeKey}`)
+            const container = document.querySelector(`#tab${activeKey}`);
           ReactDom.render(
             <TableQuery {...{
               data
             }} />,
             container
           )
-        }, 0)
-        break
+        }, 0);
+          break;
       case '6':
         setTimeout(() => {
-          const container = document.querySelector(`#tab${activeKey}`)
+            const container = document.querySelector(`#tab${activeKey}`);
           ReactDom.render(
             <ReleaseExplain />,
             container
           )
-        }, 0)
-        break
+        }, 0);
+          break;
       case '7':
         setTimeout(() => {
-          const container = document.querySelector(`#tab${activeKey}`)
+            const container = document.querySelector(`#tab${activeKey}`);
           ReactDom.render(
             <StudentQuery />,
             container
           )
-        }, 0)
-        break
+        }, 0);
+          break;
       default:
         return null
     }
-  }
+  };
   render () {
-    const tabList = ['管理员设置', '登录设置', '数据管理', '大表查询', '发布说明', '学生查询']
-    const { data } = this.props
+      const tabList = ['管理员设置', '登录设置', '数据管理', '大表查询', '发布说明', '学生查询'];
+      const {data} = this.props;
     return <div className={styles['main']}>
       <Tabs defaultActiveKey='1' onChange={this.changeTab}>
         <TabPane tab='学院管理' key='1'>
@@ -119,7 +120,7 @@ class SuperAdminTab extends React.Component {
         </TabPane>
         {
           tabList.map((item, index) => {
-            const id = 'tab' + (index + 2)
+              const id = 'tab' + (index + 2);
             return <TabPane tab={item} key={index + 2}>
               <div id={id} />
             </TabPane>

@@ -1,17 +1,17 @@
 // @flow
 import React from 'react'
 import styles from './AcatemyManage.css'
-import { Table, Icon, Input, Popconfirm } from 'antd'
-import universalFetch, { handleFetchError } from '../../utils/fetch'
+import {Icon, Input, Popconfirm, Table} from 'antd'
+import universalFetch, {handleFetchError} from '../../utils/fetch'
 
 type States = {
   name: string,
   dataSource: Array<Object>
 }
 class AcatemyManage extends React.Component {
-  state: States
+    state: States;
   constructor () {
-    super()
+      super();
     this.state = {
       name: '',
       dataSource: []
@@ -37,13 +37,13 @@ class AcatemyManage extends React.Component {
       this.getAcatemy()
     })
     .catch(handleFetchError)
-  }
+  };
   getAcatemy = () => {
-    const delAcatemy = this.delAcatemy
+      const delAcatemy = this.delAcatemy;
     universalFetch(`${__API__}academy`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -68,15 +68,15 @@ class AcatemyManage extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   componentWillMount () {
     this.getAcatemy()
   }
   addAcatemy = () => {
-    const { name } = this.state
+      const {name} = this.state;
     const data = {
       name
-    }
+    };
     universalFetch(`${__API__}academy`, {
       method: 'POST',
       headers: {
@@ -96,16 +96,16 @@ class AcatemyManage extends React.Component {
       }
       this.setState({
         name: ''
-      })
+      });
       this.getAcatemy()
     })
     .catch(handleFetchError)
-  }
+  };
   changeName = (e: Object) => {
     this.setState({
       name: e.target.value
     })
-  }
+  };
   render () {
     const columns = [{
       title: '序号',
@@ -122,15 +122,15 @@ class AcatemyManage extends React.Component {
       dataIndex: 'operate',
       key: 'operate',
       width: '25%'
-    }]
+    }];
     const baseSource = [{
       key: 999999,
       num: 0,
       name: <Input style={{ width: '300px' }} placeholder='新添加学院名称'
         value={this.state.name} onChange={this.changeName} />,
       operate: <span className={styles['operate']} onClick={this.addAcatemy}><Icon type='plus-circle-o' />添加</span>
-    }]
-    const { dataSource } = this.state
+    }];
+      const {dataSource} = this.state;
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={baseSource.concat(dataSource)} />
     </div>

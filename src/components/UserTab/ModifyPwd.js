@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './ModifyPwd.css'
-import universalFetch, { handleFetchError } from '../../utils/fetch'
-import { Form, Icon, Input, Button, message } from 'antd'
-const FormItem = Form.Item
+import universalFetch, {handleFetchError} from '../../utils/fetch'
+import {Button, Form, Icon, Input, message} from 'antd'
+
+const FormItem = Form.Item;
 
 type Props = {
   form: Object,
@@ -13,46 +14,46 @@ type State = {
   confirmDirty: boolean
 }
 class ModifyPwd extends React.Component {
-  state: State
-  props: Props
+    state: State;
+    props: Props;
   constructor (props: Props) {
-    super(props)
+      super(props);
     this.state = {
       confirmDirty: false
     }
   }
   handleReset = () => {
     this.props.form.resetFields()
-  }
+  };
   handleConfirmBlur = (e: Object) => {
-    const value = e.target.value
+      const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value })
-  }
+  };
   checkPassword = (rule, value, callback) => {
-    const form = this.props.form
+      const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
       callback('两次输入密码不一致！')
     } else {
       callback()
     }
-  }
+  };
   checkConfirm = (rule, value, callback) => {
-    const form = this.props.form
+      const form = this.props.form;
     if (value && this.state.confirmDirty) {
       form.validateFields(['confirm'], { force: true })
     }
     callback()
-  }
+  };
 
   handleSubmit = (e: Object) => {
-    const { data } = this.props
-    e.preventDefault()
+      const {data} = this.props;
+      e.preventDefault();
     const putData = {
       systemId: data.systemId,
       oldPassword: this.props.form.getFieldValue('oldPassword'),
       newPassword: this.props.form.getFieldValue('password')
-    }
-    console.log(putData)
+    };
+      console.log(putData);
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         universalFetch(`${__API__}manager/change`, {
@@ -72,19 +73,19 @@ class ModifyPwd extends React.Component {
               }
             ), 'AdminManage.js')
           }
-          message.success('修改成功')
+            message.success('修改成功');
           this.handleReset()
         })
         .catch(handleFetchError)
       }
     })
-  }
+  };
   render () {
     const formItemLayout = {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
-    }
-    const { getFieldDecorator } = this.props.form
+    };
+      const {getFieldDecorator} = this.props.form;
     return <div className={styles['main']}>
       <Form onSubmit={this.handleSubmit} className={styles['login-form']}>
         <FormItem {...formItemLayout} label='旧密码'>

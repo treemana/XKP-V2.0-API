@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './Basic.css'
-import { Table, Icon, Input, Select, Modal, Row, Col, message } from 'antd'
-const Option = Select.Option
-import universalFetch, { handleFetchError } from '../../utils/fetch'
+import {Col, Icon, Input, message, Modal, Row, Select, Table} from 'antd'
+import universalFetch, {handleFetchError} from '../../utils/fetch'
+
+const Option = Select.Option;
 
 type Props = {
   data: Object
@@ -21,10 +22,10 @@ type States = {
   modalData: Object
 }
 class Basic extends React.Component {
-  props: Props
-  state: States
+    props: Props;
+    state: States;
   constructor (props: Props) {
-    super(props)
+      super(props);
     this.state = {
       dataSource: [],
       cxpd: '',
@@ -39,12 +40,12 @@ class Basic extends React.Component {
     }
   }
   getTableData = () => {
-    const { data } = this.props
-    const updateScore = this.updateScore
+      const {data} = this.props;
+      const updateScore = this.updateScore;
     universalFetch(`${__API__}base-score/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -71,14 +72,14 @@ class Basic extends React.Component {
         })
       })
       .catch(handleFetchError)
-  }
+  };
   handleCancel = () => {
     this.setState({
       visible: false
     })
-  }
+  };
   handleOk = () => {
-    const { cxpd, dy, wt, xsky, post, xskybz, postbz, modalData } = this.state
+      const {cxpd, dy, wt, xsky, post, xskybz, postbz, modalData} = this.state;
     const data = {
       systemId: modalData.systemId,
       moral: dy,
@@ -88,7 +89,7 @@ class Basic extends React.Component {
       activity: wt,
       duty: post,
       dutyDesc: postbz
-    }
+    };
     universalFetch(`${__API__}base-score`, {
       method: 'PUT',
       headers: {
@@ -98,7 +99,7 @@ class Basic extends React.Component {
     })
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -107,24 +108,24 @@ class Basic extends React.Component {
             }
           ), 'Basic.js')
         }
-        this.getTableData()
+          this.getTableData();
         this.setState({
           visible: false
-        })
+        });
         message.success('修改成功')
       })
       .catch(handleFetchError)
-  }
+  };
   changeInput = (e: Object) => {
     this.setState({
       [e.target.name]: e.target.value
     })
-  }
+  };
   changeCxpd = (value: string) => {
     this.setState({
       cxpd: value
     })
-  }
+  };
   componentWillMount () {
     this.getTableData()
   }
@@ -140,14 +141,14 @@ class Basic extends React.Component {
       post: item.duty,
       postbz: item.dutyDesc
     })
-  }
+  };
   getData = () => {
-    const { data } = this.props
-    const updateScore = this.updateScore
+      const {data} = this.props;
+      const updateScore = this.updateScore;
     universalFetch(`${__API__}base-score/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -174,7 +175,7 @@ class Basic extends React.Component {
         })
       })
       .catch(handleFetchError)
-  }
+  };
   render () {
     const columns = [{
       title: '学号',
@@ -208,8 +209,8 @@ class Basic extends React.Component {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate'
-    }]
-    const { dataSource, cxpd, dy, wt, xsky, post, xskybz, postbz, modalData } = this.state
+    }];
+      const {dataSource, cxpd, dy, wt, xsky, post, xskybz, postbz, modalData} = this.state;
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal

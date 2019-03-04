@@ -1,11 +1,11 @@
 // @flow
-import type { Dispatch } from 'redux'
-import type { Action } from 'store/reducers'
+import type {Dispatch} from 'redux'
+import type {Action} from 'store/reducers'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const COUNTER_INCREMENT = 'COUNTER_INCREMENT'
-export const COUNTER_DOUBLE_ASYNC = 'COUNTER_DOUBLE_ASYNC'
+export const COUNTER_INCREMENT = 'COUNTER_INCREMENT';
+export const COUNTER_DOUBLE_ASYNC = 'COUNTER_DOUBLE_ASYNC';
 
 // ------------------------------------
 // Actions
@@ -28,17 +28,17 @@ export const doubleAsync = () => {
         dispatch({
           type    : COUNTER_DOUBLE_ASYNC,
           payload : getState().counter
-        })
+        });
         resolve()
       }, 200)
     })
   }
-}
+};
 
 export const actions = {
   increment,
   doubleAsync
-}
+};
 
 // ------------------------------------
 // Action Handlers
@@ -46,14 +46,14 @@ export const actions = {
 const ACTION_HANDLERS = {
   [COUNTER_INCREMENT]    : (state, action) => state + action.payload,
   [COUNTER_DOUBLE_ASYNC] : (state, action) => state * 2
-}
+};
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = 0
+const initialState = 0;
 export default function counterReducer (state: number = initialState, action: Object) {
-  const handler = ACTION_HANDLERS[action.type]
+    const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state
 }

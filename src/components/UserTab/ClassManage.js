@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './ClassManage.css'
-import { Table, Form, Input, Row, Col, Button, Popconfirm, Icon } from 'antd'
-import universalFetch, { handleFetchError } from '../../utils/fetch'
-const FormItem = Form.Item
+import {Button, Col, Form, Icon, Input, Popconfirm, Row, Table} from 'antd'
+import universalFetch, {handleFetchError} from '../../utils/fetch'
+
+const FormItem = Form.Item;
 type Props = {
   data: Object,
   form: Object
@@ -14,10 +15,10 @@ type States = {
   dataSource3: Array<Object>
 }
 class ClassManage extends React.Component {
-  props: Props
-  state: States
+    props: Props;
+    state: States;
   constructor (props: Props) {
-    super(props)
+      super(props);
     this.state = {
       dataSource1: [],
       dataSource2: [],
@@ -47,10 +48,10 @@ class ClassManage extends React.Component {
       this.getStudent()
     })
     .catch(handleFetchError)
-  }
+  };
   getStudent = () => {
-    const { data } = this.props
-    const delStudent = this.delStudent
+      const {data} = this.props;
+      const delStudent = this.delStudent;
     universalFetch(`${__API__}student/${data.classId}`)
     .then(res => res.json())
     .then((json) => {
@@ -65,13 +66,13 @@ class ClassManage extends React.Component {
       // const len = json.data.length
       const result1 = json.data.filter((item, index) => {
         return index % 3 === 0
-      })
+      });
       const result2 = json.data.filter((item, index) => {
         return index % 3 === 1
-      })
+      });
       const result3 = json.data.filter((item, index) => {
         return index % 3 === 2
-      })
+      });
       this.setState({
         dataSource1: result1.map((item, index) => {
           return {
@@ -112,25 +113,25 @@ class ClassManage extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   submitHandle = (e) => {
-    e.preventDefault()
+      e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+          console.log('Received values of form: ', values);
         this.addStudent(values)
       }
     })
   };
   addStudent = (values) => {
-    const { data } = this.props
-    console.log(data)
-    const { num, name } = values
+      const {data} = this.props;
+      console.log(data);
+      const {num, name} = values;
     const postData = {
       classId: data.classId,
       studentNumber: num,
       name
-    }
+    };
     universalFetch(`${__API__}student`, {
       method: 'POST',
       headers: {
@@ -151,7 +152,7 @@ class ClassManage extends React.Component {
       this.getStudent()
     })
     .catch(handleFetchError)
-  }
+  };
   render () {
     const columns = [{
       title: '学号',
@@ -165,9 +166,9 @@ class ClassManage extends React.Component {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate'
-    }]
-    const { dataSource1, dataSource2, dataSource3 } = this.state
-    const { getFieldDecorator, getFieldsError } = this.props.form
+    }];
+      const {dataSource1, dataSource2, dataSource3} = this.state;
+      const {getFieldDecorator, getFieldsError} = this.props.form;
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>
@@ -222,7 +223,8 @@ class ClassManage extends React.Component {
     </div>
   }
 }
-const newClassManage = Form.create()(ClassManage)
+
+const newClassManage = Form.create()(ClassManage);
 export default newClassManage
 function hasErrors (fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field])

@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectReducer } from '../store/reducers'
+import {injectReducer} from '../store/reducers'
 
 export default function asyncRoute (getComponent, store) {
   return class AsyncComponent extends React.Component {
@@ -13,7 +13,7 @@ export default function asyncRoute (getComponent, store) {
     componentWillMount () {
       if (this.state.Component === null) {
         this.mount().then(Component => {
-          AsyncComponent.Component = Component
+            AsyncComponent.Component = Component;
           if (this.mounted) {
             this.setState({ Component })
           }
@@ -32,8 +32,8 @@ export default function asyncRoute (getComponent, store) {
     mount () {
       if (store) {
         return getComponent(store).then(ms => {
-          const [ model, reducerModel, reducerKey ] = ms
-          injectReducer(store, { key: reducerKey, reducer: reducerModel.default })
+            const [model, reducerModel, reducerKey] = ms;
+            injectReducer(store, {key: reducerKey, reducer: reducerModel.default});
           return model.default
         })
       } else {
@@ -42,7 +42,7 @@ export default function asyncRoute (getComponent, store) {
     }
 
     render () {
-      const { Component } = this.state
+        const {Component} = this.state;
 
       if (Component !== null) {
         return <Component {...this.props} />

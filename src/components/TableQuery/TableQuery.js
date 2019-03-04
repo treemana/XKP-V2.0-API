@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './TableQuery.css'
-import { Table, Select, Icon, Row, Col, Button } from 'antd'
-import universalFetch, { handleFetchError } from '../../utils/fetch'
-const Option = Select.Option
+import {Button, Col, Icon, Row, Select, Table} from 'antd'
+import universalFetch, {handleFetchError} from '../../utils/fetch'
+
+const Option = Select.Option;
 type Props = {
   data: Object
 }
@@ -33,12 +34,12 @@ const initColumns = [{
   dataIndex: 'name',
   width: 100,
   key: 'name'
-}]
+}];
 class TableQuery extends React.Component {
-  props: Props
-  state: States
+    props: Props;
+    state: States;
   constructor (props: Props) {
-    super(props)
+      super(props);
     this.state = {
       specialty: '',
       classes: '',
@@ -57,17 +58,17 @@ class TableQuery extends React.Component {
     }
   }
   getCourse = () => {
-    const { classes, buttonClick } = this.state
+      const {classes, buttonClick} = this.state;
     if (buttonClick) {
       return
     }
     this.setState({
       buttonClick: true
-    })
+    });
     universalFetch(`${__API__}course/${classes}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -84,7 +85,7 @@ class TableQuery extends React.Component {
           key: item.systemId,
           type: item.type
         }
-      })
+      });
       this.setState({
         showTable: true,
         buttonClick: false,
@@ -147,19 +148,19 @@ class TableQuery extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   getHistoryCourse = () => {
-    const { semester, buttonClick } = this.state
+      const {semester, buttonClick} = this.state;
     if (buttonClick) {
       return
     }
     this.setState({
       buttonClick: true
-    })
+    });
     universalFetch(`${__API__}/history/course/${semester}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -176,7 +177,7 @@ class TableQuery extends React.Component {
           key: item.systemId,
           type: item.type
         }
-      })
+      });
       this.setState({
         showTable: true,
         buttonClick: false,
@@ -239,14 +240,14 @@ class TableQuery extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   getSpecialty = () => {
-    const { data } = this.props
+      const {data} = this.props;
     if (data.type === 'C') {
       universalFetch(`${__API__}specialty-name/${data.specialtyId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -265,14 +266,14 @@ class TableQuery extends React.Component {
       })
       .catch(handleFetchError)
     }
-  }
+  };
   getClass = () => {
-    const { data } = this.props
+      const {data} = this.props;
     if (data.type === 'C') {
       universalFetch(`${__API__}class/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -291,15 +292,15 @@ class TableQuery extends React.Component {
       })
       .catch(handleFetchError)
     }
-  }
+  };
   getSemester = () => {
-    const { data } = this.props
-    console.log(data)
+      const {data} = this.props;
+      console.log(data);
     if (data.type === 'C') {
       universalFetch(`${__API__}history/title/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -311,22 +312,22 @@ class TableQuery extends React.Component {
         json.data.push({
           systemId: 'now',
           name: '当前学期'
-        })
+        });
         this.setState({
           semesterList: json.data
         })
       })
       .catch(handleFetchError)
     }
-  }
+  };
   downLoadDocx = () => {
-    const { classes } = this.state
+      const {classes} = this.state;
     universalFetch(`${__API__}benchmark/download-docx/${classes}`, {
       contentType: 'application/octet-stream'
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -337,15 +338,15 @@ class TableQuery extends React.Component {
       }
     })
     .catch(handleFetchError)
-  }
+  };
   downLoadXlsx = () => {
-    const { classes } = this.state
+      const {classes} = this.state;
     universalFetch(`${__API__}benchmark/download-xlsx/${classes}`, {
       contentType: 'application/octet-stream'
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -356,13 +357,13 @@ class TableQuery extends React.Component {
       }
     })
     .catch(handleFetchError)
-  }                                                                                                                                                                                                                                                                                                                                                                                               
+  };
   componentWillMount () {
-    const { data } = this.props
-    this.getAcatemy()
-    this.getSpecialty()
-    this.getClass()
-    this.getSemester()
+      const {data} = this.props;
+      this.getAcatemy();
+      this.getSpecialty();
+      this.getClass();
+      this.getSemester();
     if (data.type === 'C') {
       this.setState({
         grade: data.grade,
@@ -371,12 +372,12 @@ class TableQuery extends React.Component {
     }
   }
   getAcatemy = () => {
-    const { data } = this.props
+      const {data} = this.props;
     if (data.type === 'C' || data.type === 'B') {
       universalFetch(`${__API__}academy/${data.academyId}`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -407,7 +408,7 @@ class TableQuery extends React.Component {
       universalFetch(`${__API__}academy`)
       .then(res => res.json())
       .then((json) => {
-        console.log(json)
+          console.log(json);
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -422,15 +423,15 @@ class TableQuery extends React.Component {
       })
       .catch(handleFetchError)
     }
-  }
+  };
   queryData = () => {
-    this.getCourse()
-    const { classes } = this.state
-    let source = []
+      this.getCourse();
+      const {classes} = this.state;
+      let source = [];
     universalFetch(`${__API__}benchmark/${classes}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -455,31 +456,31 @@ class TableQuery extends React.Component {
           score: item.score,
           scoreRank: item.scoreRank,
           total: item.total
-        }
-        const more = {}
+        };
+          const more = {};
         item.marks.map((mark, i) => {
           const m = {
             [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
-          }
+          };
           Object.assign(more, m)
-        })
+        });
         source.push(Object.assign(base, more))
-      })
+      });
       this.setState({
         showTable: true,
         dataSource: source
       })
     })
     .catch(handleFetchError)
-  }
+  };
   queryHistory = () => {
-    this.getHistoryCourse()
-    const { semester } = this.state
-    let source = []
+      this.getHistoryCourse();
+      const {semester} = this.state;
+      let source = [];
     universalFetch(`${__API__}/history/benchmark/${semester}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -504,23 +505,23 @@ class TableQuery extends React.Component {
           score: item.score,
           scoreRank: item.scoreRank,
           total: item.total
-        }
-        const more = {}
+        };
+          const more = {};
         item.marks.map((mark, i) => {
           const m = {
             [mark.courseId]: mark.type === true ? mark.examination : mark.inspection
-          }
+          };
           Object.assign(more, m)
-        })
+        });
         source.push(Object.assign(base, more))
-      })
+      });
       this.setState({
         showTable: true,
         dataSource: source
       })
     })
     .catch(handleFetchError)
-  }
+  };
   changeAcatemy = (value: string) => {
     this.setState({
       acatemy: value,
@@ -528,11 +529,11 @@ class TableQuery extends React.Component {
       grade: '',
       classes: '',
       semester: '当前学期'
-    })
+    });
     universalFetch(`${__API__}specialty/${value}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -546,18 +547,18 @@ class TableQuery extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   changeSpecialty = (value: string) => {
     this.setState({
       specialty: value,
       grade: '',
       classes: '',
       semester: '当前学期'
-    })
+    });
     universalFetch(`${__API__}grade`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -571,18 +572,18 @@ class TableQuery extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   changeGrade = (value: string) => {
-    const { specialty } = this.state
+      const {specialty} = this.state;
     this.setState({
       grade: value,
       classes: '',
       semester: '当前学期'
-    })
+    });
     universalFetch(`${__API__}class?specialtyId=${specialty}&grade=${value}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -596,17 +597,17 @@ class TableQuery extends React.Component {
       })
     })
     .catch(handleFetchError)
-  }
+  };
   changeClass = (value: string) => {
-    console.log(value)
+      console.log(value);
     this.setState({
       classes: value,
       semester: '当前学期'
-    })
+    });
     universalFetch(`${__API__}history/title/${value}`)
     .then(res => res.json())
     .then((json) => {
-      console.log(json)
+        console.log(json);
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -618,21 +619,22 @@ class TableQuery extends React.Component {
       json.data.push({
         systemId: 'now',
         name: '当前学期'
-      })
+      });
       this.setState({
         semesterList: json.data
       })
     })
     .catch(handleFetchError)
-  }
+  };
   changeSemester = (value: string) => {
     this.setState({
       semester: value
     })
-  }
+  };
   render () {
     const { specialty, acatemy, grade, acatemyList, specialtyList, classList, semesterList,
-      gradeList, showTable, classes, semester, columns } = this.state
+        gradeList, showTable, classes, semester, columns
+    } = this.state;
     return <div className={styles['main']}>
       <div className={styles['class-select']}>
         <Row>
