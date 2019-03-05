@@ -7,6 +7,6 @@ const Header = () => (
   <header className={styles['header']}>
     <UserMenu />
   </header>
-);
+)
 
 export default Header

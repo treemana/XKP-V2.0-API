@@ -1,6 +1,6 @@
 // @flow
-import {connect} from 'react-redux'
-import {fetchRepos} from 'store//modules/githubRepos'
+import { connect } from 'react-redux'
+import { fetchRepos } from 'store//modules/githubRepos'
 import GithubRepos from '../components/GithubRepos'
 
 /*  This is a container component. Notice it does not contain any JSX,
@@ -14,11 +14,11 @@ import GithubRepos from '../components/GithubRepos'
 
 const mapDispatchToProps = {
   fetchRepos
-};
+}
 
 const mapStateToProps = (state) => ({
   repos : state.githubRepos
-});
+})
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 

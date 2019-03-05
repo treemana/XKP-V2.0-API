@@ -17,12 +17,16 @@ export const makeRootReducer = (asyncReducers: AsyncReducers = {}) => {
     githubRepos,
     ...asyncReducers
   })
-};
+}
 
 export const injectReducer = (store: Store<*, *>, { key, reducer }: AsyncReducer) => {
-    if (Object.hasOwnProperty.call(storeHelper.asyncReducers, key)) return;
+  if (Object.hasOwnProperty.call(storeHelper.asyncReducers, key)) return
 
+<<<<<<< HEAD
     storeHelper.asyncReducers[key] = reducer
+=======
+  storeHelper.asyncReducers[key] = reducer
+>>>>>>> cc437f57c50c25fc3764f451d6791fc7c92cd38e
   store.replaceReducer(makeRootReducer(storeHelper.asyncReducers))
 }
 

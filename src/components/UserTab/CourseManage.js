@@ -1,10 +1,10 @@
 // @flow
 import React from 'react'
 import styles from './CourseManage.css'
-import {Icon, Input, Message, Popconfirm, Select, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Icon, Input, Message, Popconfirm, Select, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
-const Option = Select.Option;
+const Option = Select.Option
 type Props = {
   data: Object
 }
@@ -18,10 +18,10 @@ type States = {
   typeError: boolean
 }
 class CourseManage extends React.Component {
-    props: Props;
-    state: States;
+  props: Props;
+  state: States;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       name: '',
       nameError: false,
@@ -57,12 +57,12 @@ class CourseManage extends React.Component {
     .catch(handleFetchError)
   };
   getCourse = () => {
-      const {data} = this.props;
-      const delCourse = this.delCourse;
+    const { data } = this.props
+    const delCourse = this.delCourse
     universalFetch(`${__API__}course/${data.classId}`)
     .then(res => res.json())
     .then((json) => {
-        console.log(json);
+      console.log(json)
       if (json.code !== 0) {
         throw new Error(JSON.stringify(
           {
@@ -91,24 +91,24 @@ class CourseManage extends React.Component {
     .catch(handleFetchError)
   };
   addCourse = () => {
-      const {data} = this.props;
-      const {name, nameError, score, scoreError, type, typeError} = this.state;
+    const { data } = this.props
+    const { name, nameError, score, scoreError, type, typeError } = this.state
     type || this.setState({
       typeError: true
-    });
+    })
     name || this.setState({
       nameError: true
-    });
+    })
     score || this.setState({
       scoreError: true
-    });
+    })
     if (!(name && score && type)) {
       return
     }
     if ((nameError && scoreError && typeError)) {
       return
     }
-      let exam = false;
+    let exam = false
     if (type === '考试') {
       exam = true
     }
@@ -117,7 +117,7 @@ class CourseManage extends React.Component {
       credit: score,
       type: exam,
       name
-    };
+    }
     universalFetch(`${__API__}course`, {
       method: 'POST',
       headers: {
@@ -128,7 +128,7 @@ class CourseManage extends React.Component {
     .then(res => res.json())
     .then((json) => {
       if (json.code !== 0) {
-          Message.error('添加课程失败TnT');
+        Message.error('添加课程失败TnT')
         throw new Error(JSON.stringify(
           {
             code: json.code,
@@ -136,12 +136,12 @@ class CourseManage extends React.Component {
           }
         ), 'CourseManage.js')
       }
-        Message.success('添加课程成功 ：)');
+      Message.success('添加课程成功 ：)')
       this.setState({
         name: '',
         score: '',
         type: ''
-      });
+      })
       this.getCourse()
     })
     .catch(handleFetchError)
@@ -185,7 +185,7 @@ class CourseManage extends React.Component {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate'
-    }];
+    }]
     const baseSource = [{
       key: 999999,
       num: 0,
@@ -216,7 +216,7 @@ class CourseManage extends React.Component {
         </div>
       ),
       operate: <span className={styles['operate']} onClick={this.addCourse}><Icon type='plus-circle-o' />添加</span>
-    }];
+    }]
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={baseSource.concat(this.state.dataSource)} />
     </div>

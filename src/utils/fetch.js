@@ -4,7 +4,7 @@
  */
 
 import fetch from 'isomorphic-fetch'
-import {notification} from 'antd'
+import { notification } from 'antd'
 import merge from 'lodash.merge'
 
 type Params = {
@@ -26,21 +26,21 @@ function handleFetch ({ path, options }: Params) {
 }
 
 export function handleFetchError (e: Error, title: string = '请求异常') {
-    const ErrMessage = e ? (e.message ? e.message : e) : e;
-    let errInfo;
-    let MatchErr = false;
+  const ErrMessage = e ? (e.message ? e.message : e) : e
+  let errInfo
+  let MatchErr = false
   try {
     // $FlowFixMe
-      errInfo = JSON.parse(ErrMessage);
+    errInfo = JSON.parse(ErrMessage)
     MatchErr = true
   } catch (e) {
-      errInfo = ErrMessage;
+    errInfo = ErrMessage
     MatchErr = false
   }
-    console.error(errInfo);
+  console.error(errInfo)
   if (MatchErr && (errInfo.code === 2)) {
-      localStorage.setItem('token', '');
-      const origin = window.location.origin;
+    localStorage.setItem('token', '')
+    const origin = window.location.origin
     window.location.href = origin
   }
   notification['error']({
@@ -55,7 +55,7 @@ function isResError ({ status }: Object) {
 }
 
 function handleResponseStatus (response) {
-    console.log('response status:', response.status);
+  console.log('response status:', response.status)
   if (isResError(response)) {
     // TODO: handle http error
   }
@@ -64,13 +64,13 @@ function handleResponseStatus (response) {
 }
 
 export function universalFetch (path: string, options: Object = {}, store?: Store) {
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token')
   const headerOptions = merge(options, {
     headers: {
       'token': token
     }
-  });
-    const params = {path, options: headerOptions};
+  })
+  const params = { path, options: headerOptions }
 
   return setParams(params, store)
     .then(handleFetch)

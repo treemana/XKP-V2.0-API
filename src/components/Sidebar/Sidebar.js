@@ -7,6 +7,6 @@ export const Sidebar = () => (
   <div className={styles['bar']}>
     <SideMenu />
   </div>
-);
+)
 
 export default Sidebar

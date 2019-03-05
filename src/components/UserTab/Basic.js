@@ -1,11 +1,11 @@
 // @flow
 import React from 'react'
 import styles from './Basic.css'
-import {Col, Form, Icon, Input, message, Modal, Row, Select, Table} from 'antd'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
+import { Col, Form, Icon, Input, message, Modal, Row, Select, Table } from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
 
-const Option = Select.Option;
-const FormItem = Form.Item;
+const Option = Select.Option
+const FormItem = Form.Item
 
 type Props = {
   data: Object,
@@ -17,10 +17,10 @@ type States = {
   modalData: Object
 }
 class Basic extends React.Component {
-    props: Props;
-    state: States;
+  props: Props;
+  state: States;
   constructor (props: Props) {
-      super(props);
+    super(props)
     this.state = {
       dataSource: [],
       modalData: {},
@@ -28,12 +28,12 @@ class Basic extends React.Component {
     }
   }
   getTableData = () => {
-      const {data} = this.props;
-      const updateScore = this.updateScore;
+    const { data } = this.props
+    const updateScore = this.updateScore
     universalFetch(`${__API__}base-score/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
-          console.log(json);
+        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -67,8 +67,8 @@ class Basic extends React.Component {
     })
   };
   handleOk = (values) => {
-      const {modalData} = this.state;
-      const {cxpd, dy, wt, xsky, post, xskybz, postbz} = values;
+    const { modalData } = this.state
+    const { cxpd, dy, wt, xsky, post, xskybz, postbz } = values
     const data = {
       systemId: modalData.systemId,
       moral: dy,
@@ -78,8 +78,8 @@ class Basic extends React.Component {
       activity: wt,
       duty: post,
       dutyDesc: postbz
-    };
-      console.log('data', data);
+    }
+    console.log('data', data)
     universalFetch(`${__API__}base-score`, {
       method: 'PUT',
       headers: {
@@ -89,7 +89,7 @@ class Basic extends React.Component {
     })
       .then(res => res.json())
       .then((json) => {
-          console.log(json);
+        console.log(json)
         if (json.code !== 0) {
           throw new Error(JSON.stringify(
             {
@@ -98,10 +98,10 @@ class Basic extends React.Component {
             }
           ), 'Basic.js')
         }
-          this.getTableData();
+        this.getTableData()
         this.setState({
           visible: false
-        });
+        })
         message.success('修改成功')
       })
       .catch(handleFetchError)
@@ -110,7 +110,7 @@ class Basic extends React.Component {
     this.getTableData()
   }
   updateScore = (item: Object) => {
-      console.log('updateScore', item);
+    console.log('updateScore', item)
     this.setState({
       visible: true,
       modalData: { ...item }
@@ -119,14 +119,14 @@ class Basic extends React.Component {
   submitHandle = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-          console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values)
         this.handleOk(values)
       }
     })
   };
   getData = () => {
-      const {data} = this.props;
-      const updateScore = this.updateScore;
+    const { data } = this.props
+    const updateScore = this.updateScore
     universalFetch(`${__API__}base-score/${data.classId}`)
       .then(res => res.json())
       .then((json) => {
@@ -190,10 +190,10 @@ class Basic extends React.Component {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate'
-    }];
-      const {dataSource, modalData, visible} = this.state;
-      const {getFieldDecorator} = this.props.form;
-      console.log('render', modalData);
+    }]
+    const { dataSource, modalData, visible } = this.state
+    const { getFieldDecorator } = this.props.form
+    console.log('render', modalData)
     return <div className={styles['main']}>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
@@ -353,6 +353,6 @@ const formItemLayout = {
     xs: { span: 30 },
     sm: { span: 13 }
   }
-};
-const newBasic = Form.create()(Basic);
+}
+const newBasic = Form.create()(Basic)
 export default newBasic

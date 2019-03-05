@@ -1,23 +1,23 @@
 // @flow
 import React from 'react'
 import styles from './Login.css'
-import universalFetch, {handleFetchError} from '../../utils/fetch'
-import {Button, Form, Icon, Input} from 'antd'
+import universalFetch, { handleFetchError } from '../../utils/fetch'
+import { Button, Form, Icon, Input } from 'antd'
 
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
 type Props = {
   form: Object,
   history: Object
 }
 class Login extends React.Component {
-    props: Props;
+  props: Props;
   handleSubmit = (e: Object) => {
-      e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-          console.log(this.props.form.getFieldsValue());
-          const data = this.props.form.getFieldsValue();
+        console.log(this.props.form.getFieldsValue())
+        const data = this.props.form.getFieldsValue()
         universalFetch(`${__API__}login`, {
           method: 'POST',
           headers: {
@@ -27,7 +27,7 @@ class Login extends React.Component {
         })
         .then(res => res.json())
         .then((json) => {
-            console.log(json);
+          console.log(json)
           if (json.code !== 0) {
             throw new Error(JSON.stringify(
               {
@@ -36,7 +36,7 @@ class Login extends React.Component {
               }
             ), 'login.js')
           }
-            localStorage.setItem('token', json.data.token);
+          localStorage.setItem('token', json.data.token)
           this.props.history.push({
             pathname: '/home',
             state: {
@@ -49,7 +49,7 @@ class Login extends React.Component {
     })
   };
   render () {
-      const {getFieldDecorator} = this.props.form;
+    const { getFieldDecorator } = this.props.form
     return <div className={styles['main']}>
       <div className={styles['main-container']}>
         <div className={styles['title']}>
