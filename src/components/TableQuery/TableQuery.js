@@ -745,14 +745,17 @@ class TableQuery extends React.Component {
             }
           </Col>
           <Col span={3}>
-            <Button type='primary' onClick={(semester === '当前学期' || semester === 'now') ? this.queryData : this.queryHistory} disabled={!(acatemy && specialty && grade && classes)}>
+            <Button type='primary'
+              onClick={(semester === '当前学期' || semester === 'now') ? this.queryData : this.queryHistory}
+              disabled={!(acatemy && specialty && grade && classes)}>
               <Icon type='search' />
               确定
             </Button>
           </Col>
           <Col span={3}>
             <a href={`${__API__}benchmark/download-docx/${classes}`}>
-              <Button type='primary' disabled={!((acatemy && specialty && grade && classes) && (semester === 'now' || semester === '当前学期'))}>
+              <Button type='primary'
+                disabled={!((acatemy && specialty && grade && classes) && (semester === 'now' || semester === '当前学期'))}>
                 <Icon type='cloud-download' />
                 Word下载
               </Button>
@@ -760,7 +763,8 @@ class TableQuery extends React.Component {
           </Col>
           <Col span={3}>
             <a href={`${__API__}benchmark/download-xlsx/${classes}`}>
-              <Button type='primary' disabled={!((acatemy && specialty && grade && classes) && (semester === 'now' || semester === '当前学期'))}>
+              <Button type='primary'
+                disabled={!((acatemy && specialty && grade && classes) && (semester === 'now' || semester === '当前学期'))}>
                 <Icon type='cloud-download' />
                 Excel下载
               </Button>
