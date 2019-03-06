@@ -44,7 +44,7 @@ webpackConfig.entry = {
 // Bundle Output
 // ------------------------------------
 webpackConfig.output = {
-  filename   : `[name].[${project.compiler_hash_type}].js`,
+  filename   : `[name].js`,
   path       : project.paths.dist(),
   publicPath : project.compiler_public_path
 }
@@ -186,70 +186,7 @@ webpackConfig.module.rules.push({
 
 // File rules
 /* eslint-disable */
-webpackConfig.module.rules.push(
-  {
-    test: /\.woff(\?.*)?$/,
-    loader: 'url-loader',
-    options: {
-      prefix  : 'fonts/&name=[path][name].[ext]',
-      limit   : 10000,
-      mimetype: 'application/font-woff'
-    }
-  },
-  {
-    test: /\.woff2(\?.*)?$/,
-    loader: 'url-loader',
-    options: {
-      prefix  : 'fonts/',
-      name    : '[path][name].[ext]',
-      limit   : 10000,
-      mimetype: 'application/font-woff2'
-    }
-  },
-  {
-    test: /\.otf(\?.*)?$/,
-    loader: 'file-loader',
-    options: {
-      prefix  : 'fonts/',
-      name    : '[path][name].[ext]',
-      limit   : 10000,
-      mimetype: 'font/opentype'
-    }
-  },
-  {
-    test: /\.ttf(\?.*)?$/,
-    loader: 'url-loader',
-    options: {
-      prefix  : 'fonts/',
-      name    : '[path][name].[ext]',
-      limit   : 10000,
-      mimetype: 'application/octet-stream'
-    }
-  },
-  {
-    test: /\.eot(\?.*)?$/,
-    loader: 'file-loader',
-    options: {
-      prefix  : 'fonts/',
-      name    : '[path][name].[ext]'
-    }
-  },
-  {
-    test: /\.svg(\?.*)?$/,
-    loader: 'url-loader',
-    options: {
-      prefix  : 'fonts/',
-      name    : '[path][name].[ext]',
-      limit   : 10000,
-      mimetype: 'image/svg+xml'
-    }
-  },
-  {
-    test: /\.(png|jpg)$/,
-    loader: 'url-loader',
-    options: { limit: 8192 }
-  }
-);
+
 /* eslint-enable */
 
 // ------------------------------------
@@ -275,7 +212,7 @@ if (!__DEV__) {
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin({
-      filename: '[name].[contenthash].css',
+      filename: '[name].css',
       allChunks : true
     })
   )

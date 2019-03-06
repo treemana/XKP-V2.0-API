@@ -61,7 +61,7 @@ const config = {
   compiler_quiet           : false,
   compiler_public_path     : '/',
   compiler_stats           : {
-    chunks : false,
+    chunks : true,
     chunkModules : false,
     colors : true
   },
