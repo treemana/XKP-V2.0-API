@@ -246,10 +246,10 @@ class ResultInput extends React.Component {
     const { columns, dataSource, modalData, courseData, visible, uploading } = this.state
     return <div className={styles['result-main']}>
       <Row className={styles['uploadButton']}>
-        <Button>
+        <div type='button' className={styles['fakeButton']}>
           <Spin spinning={uploading} size='small' />Excel导入
           <input type='file' name='file' className={styles['realfile']} size='100' onChange={this.uploadExcel} />
-        </Button>
+        </div>
       </Row>
       <Table columns={columns} pagination={false} dataSource={dataSource} />
       <Modal
