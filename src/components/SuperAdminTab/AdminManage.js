@@ -107,12 +107,13 @@ class AdminManage extends React.Component {
     if (!name) {
       return
     }
+    let type = this.props.data.type === 'A' ? 'B' : 'C'
     const data = {
       username: name,
       academyId: acatemy,
       specialtyId: specialty,
       classId: classes,
-      type: 'C',
+      type,
       grade
     }
     universalFetch(`${__API__}manager`, {
